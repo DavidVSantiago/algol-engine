@@ -1,4 +1,5 @@
 import SimpleSprite from './sprites/types/simple_sprite.js';
+import AnimatedSprite from './sprites/types/animated_sprite.js';
 import SpriteBatch from './sprites/sprite_batch.js';
 import SimpleScene from './scenes/types/simple_scene.js';
 import SceneManager from './scenes/scene_manager.js';
@@ -41,14 +42,19 @@ class Engine{
         this.sceneManager.getActualScene().update();
     }
 
-    render(){
+    render(deltaTime){
         //console.log('render - ENGINE');
-        this.sceneManager.getActualScene().render();
+        this.sceneManager.getActualScene().render(deltaTime);
     }
     gameloop=()=>{
+        let tempoAtual = performance.now();
+        let deltaTime = (tempoAtual - this.tempoAnterior) ;//* (6e-2);
+
         this.handleEvents();
         this.update();
-        this.render();
+        this.render(deltaTime);
+
+        this.tempoAnterior = tempoAtual; // atualiza o tempo anterior (para o próximo quadro)
         requestAnimationFrame(this.gameloop);
     }
 
@@ -75,4 +81,4 @@ class Engine{
     }
 }
 
-export {Engine,SimpleSprite,SpriteBatch,SimpleScene,SceneManager};
+export {Engine,SimpleSprite,AnimatedSprite,SpriteBatch,SimpleScene,SceneManager};

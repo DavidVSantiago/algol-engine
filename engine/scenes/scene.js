@@ -22,7 +22,7 @@ class Scene{
         this.actualState = this.spriteBatchList[stateIndex];
     }  
 
-    putSprite(sprite,stateIndex){
+    registerSprite(sprite,stateIndex){
         this.spriteBatchList[stateIndex].putSprite(sprite);
     }
 
@@ -38,9 +38,9 @@ class Scene{
         
     }
 
-    render(){
+    render(deltaTime){
         // renderiza o srpitebatch do stado atual
-        this.actualState.render();
+        this.actualState.render(deltaTime);
     }
 }
 

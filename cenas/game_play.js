@@ -1,4 +1,4 @@
-import {SimpleScene,SimpleSprite} from '../engine/engine.js';
+import {SimpleScene,SimpleSprite,AnimatedSprite} from '../engine/engine.js';
 
 class GamePlay extends SimpleScene{
     constructor(name){
@@ -10,15 +10,17 @@ class GamePlay extends SimpleScene{
 
         // registra os ESTADOS
         this.registerState(this.STATE_PLAY);
-        this.registerState(this.STATE_PAUSEs);
+        this.registerState(this.STATE_PAUSE);
 
         // cria os sprites dessa cena
         this.chao = new SimpleSprite('assets/imgs/fundo.png');
-        this.braid = new SimpleSprite('assets/imgs/braid-died.png');
+        //this.braid = new SimpleSprite('assets/imgs/braid-died.png');
+        this.braid = new AnimatedSprite('assets/imgs/braid-jump.png',1,15,15);
         
         // coloca cada sprite nos batchs dos seus respectivos STATES
-        this.putSprite(this.chao,this.STATE_PLAY);
-        this.putSprite(this.braid,this.STATE_PAUSE);
+        this.registerSprite(this.chao,this.STATE_PLAY);
+        this.registerSprite(this.chao,this.STATE_PAUSE);
+        this.registerSprite(this.braid,this.STATE_PAUSE);
     }
 
     // Sobrescreve para especificar como as teclas serão tratadas nessa cena
