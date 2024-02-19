@@ -1,35 +1,41 @@
 import SimpleSprite from './simple_sprite.js';
 
 /** Implementação de SimpleSprite com suporte para vários frames simples de um mesmo sprite. */
-class MultiSimpleSprite{
+class MultiSimpleSprite extends SimpleSprite{
     /**
      * Construtor
      * @param {String} fileSource - caminho do arquivo da imagem com os sprites
-     * @param {Number} framesNumber - quantidade de sprites na imagem
-     * @param {Number} line - numero da linha na imagem que contém os sprites (começa de 0)
      */
-    constructor(fileSource,framesNumber,line){
-        this.spriteIndex=0;
-        this.sprites=[]; // array de SimpleSprite
-        
-        let img=new Image(); // cria um obj de imagem
-        img.src = fileSource; // carrega a imagem no obj
-        img.onload=()=>{ // após o carregamento...
-            // percorre as colunas da imagem para obter cada um dos frames simples
-            for(let j=0; j<framesNumber; j++){
-                // cria um novo SimpleSprite com a ordem de recortar um novo fragmento da imagem
-                let x = j*img.width;
-                let y = line*img.height;
-                let simpleSprite = new SimpleSprite(fileSource,)
+    constructor(fileSource){
+        super(fileSource);
+        this.spriteIndex=0; // indice do sprite a ser renderizado
+    }
+    /**
+     * Inicializa o processamento de recorte das imagens do sprite
+     * @param {Number} twNumbers numero de tiles na largura da imagem
+     * @param {Number} thNumbers numero de tiles na altura da imagem
+     * @param {Number} line linha da imagem de onde serão retirados os frames
+     */
+    init(twNumbers,thNumbers,line){ // overriding
+        this.img.onload=()=>{ // após carregada a imagem...
+            this.loaded=true; // sinaliza à flag
+            this.initFramesList(this.img.width,this.img.height) //inicializa a lista de frames (this.frames)
+            // percorre as colunas da imagem para obter cada um dos frames
+            let tw = this.img.width/twNumbers;
+            let th = this.img.height/thNumbers;
+            for(let j=0; j<twNumbers; j++){
+                let sx = j*tw;
+                let sy = line*th;
+                this.frames[0].push(this.getSubImage(this.img,sx,sy,tw,th));
             }
         }
     }
     /** Retorna o frame único do sprite para a renderização. */
     getFrame(deltaTime){ // overriding
-        return this.sprites[spriteIndex].getFrame(deltaTime);
+        return this.frames[0][this.spriteIndex];
     }
-    /** Carrega  */
-    loadImages(){
+    setFrameIndex(index){
+        this.spriteIndex=index;
 
     }
 }
