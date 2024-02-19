@@ -1,5 +1,4 @@
 import Sprite from '../sprite.js';
-import Resources from '../../resources.js';
 
 /** Implementação para Sprites animados.
  * Para sprites com vários quadros de animação. */
@@ -53,7 +52,7 @@ class AnimatedSprite extends Sprite{
         const ctxCanvasImage = offCanvasImage.getContext('2d');       
         // desenha a imagem no "local de recorte"
         ctxCanvasImage.drawImage(this.image,0,0);
-
+        // corta o cada tile e insere no array de frames
         for(let i=0; i<this.lns; i++){ // linhas da imagem
             for(let j=0; j<this.cols; j++){ // colunas da imagem
                 const tileData = ctxCanvasImage.getImageData(j*tileWidth,i*tileHeight,tileWidth,tileHeight);

@@ -22,8 +22,8 @@ class Sprite{
     /** Renderiza o sprite na tela.
      * @param {CanvasRenderingContext2D } ctx - contexto de renderização. */
     render(ctx,deltaTime){
-        
-        ctx.drawImage(this.getFrame(deltaTime),Math.floor(this.posX),Math.floor(this.posY));
+        if(this.loaded)// apenas renderiza se o Sprite estiver carregado (evita falhas de exibição)
+            ctx.drawImage(this.getFrame(deltaTime),Math.floor(this.posX),Math.floor(this.posY));
     }
 }
 

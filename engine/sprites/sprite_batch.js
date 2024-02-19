@@ -11,12 +11,10 @@ class SpriteBatch{
     render(deltaTime){
         // limpa a tela da renderização do quadro anterior
         this.res.clearScreen();
-        
         // renderiza todos os sprites no imageBuffer externo
         for(let i=0;i<this.spritesList.length;i++){
             this.spritesList[i].render(this.res.offCtx,deltaTime);
         }
-
         // renderiza o imageBuffer na tela do jogo
         this.res.ctx.drawImage(this.res.offscreen,0,0);
     }
