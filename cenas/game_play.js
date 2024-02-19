@@ -1,4 +1,5 @@
 import {SimpleScene,SimpleSprite,AnimatedSprite} from '../engine/engine.js';
+import MultiAnimatedSprite from '../engine/sprites/types/multi_animated_sprite.js';
 import MultiSimpleSprite from '../engine/sprites/types/multi_simple_sprite.js';
 
 class GamePlay extends SimpleScene{
@@ -17,8 +18,8 @@ class GamePlay extends SimpleScene{
         this.chao = new SimpleSprite('assets/imgs/fundo.png');
         this.chao.init(); // obrigatório
         //this.braid = new SimpleSprite('assets/imgs/braid-died.png');
-        this.braid = new AnimatedSprite('assets/imgs/braid-jump.png');
-        this.braid.init(15,1,0);
+        this.braid = new MultiAnimatedSprite('assets/imgs/braid-jump-teste.png');
+        this.braid.init(15,3,0);
         
         // coloca cada sprite nos batchs dos seus respectivos STATES
         this.registerSprite(this.chao,this.STATE_PLAY);

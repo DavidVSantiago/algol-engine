@@ -16,9 +16,13 @@ class Sprite{
         this.speedX=0.0;
         this.speedY=0.0;
     }
-    initFramesList(lns,cols){
-        this.frames = new Array(lns);
-        for (let i = 0; i < lns; i++) {
+    /**
+     * Inicializa o o array de sprites
+     * @param {Number} lines numero de linhas no array (cada linha armazena 1 sprite)
+     */
+    initFramesList(lines){
+        this.frames = new Array(lines);
+        for (let i = 0; i < lines; i++) {
             this.frames[i] = [];
         }
     }
@@ -38,11 +42,11 @@ class Sprite{
     /**
      * Obtém um pedaço menor de uma imagem maior
      * @param {Image} img imagem a ser recortada
-     * @param {Number} sx - coordenada X do ponto de origem do recorte
-     * @param {Number} sy - coordenada Y do ponto de origem do recorte
-     * @param {Number} sw - largura do recorte
-     * @param {Number} sh - altura do recorte
-     * @return {OffscreenCanvasRenderingContext2D } o pedaço da imagem original
+     * @param {Number} x - coordenada X do ponto de origem do recorte
+     * @param {Number} y - coordenada Y do ponto de origem do recorte
+     * @param {Number} w - largura do recorte
+     * @param {Number} h - altura do recorte
+     * @return {OffscreenCanvas} o pedaço da imagem original
      */
     getSubImage(img,x,y,w,h){
         let imgBuffer = new OffscreenCanvas(img.width,img.height);
@@ -51,6 +55,19 @@ class Sprite{
         this.subImgBuffer = new OffscreenCanvas(w,h);
         this.subImgBuffer.getContext('2d').putImageData(subImgData,0,0);
         return this.subImgBuffer;
+    }
+
+    checkEmptyImage(imgBuffer,w,h){
+        // obtém os dados da imagem
+        let imgData = imgBuffer.getContext('2d').getImageData(0,0,w,h);
+        // Percorre todos os pixels da imagem
+        for (let i = 0; i < imgData.data.length; i += 4) {
+            // Verifica se o canal alfa (transparência) tem valor 255
+            if (imgData.data[i + 3] == 255)
+                return false;// Se encontrar um pixel não transparente, a imagem não está vazia
+        }
+        // Se todos os pixels forem transparentes, a imagem está vazia
+        return true;
     }
 }
 
