@@ -15,8 +15,9 @@ class MultiAnimatedSprite extends AnimatedSprite{
      * Inicializa o processamento de recorte das imagens do sprite
      * @param {Number} twNumbers numero de tiles na largura da imagem
      * @param {Number} thNumbers numero de tiles na altura da imagem
+     * @param {Number} indexStartSprite indice do sprite a ficar ativo
      */
-    init(twNumbers,thNumbers){ // overriding
+    init(twNumbers,thNumbers,indexStartSprite){ // overriding
         this.img.onload=()=>{ // após carregada a imagem...
             this.loaded=true; // sinaliza à flag
             this.initFramesList(thNumbers) //inicializa a lista de frames (this.frames)
@@ -35,13 +36,8 @@ class MultiAnimatedSprite extends AnimatedSprite{
                     this.frames[i].push(subimage); // insere o frame no array de frames
                 }
             }
-            this.changeSprite(2);
+            this.setSpriteIndex(indexStartSprite);
         }
-    }
-    changeSprite(index){
-        if(index >= this.frames.length)
-            throw new Error("Tentativa inváida de mudança de sprite na imagem "+this.img.src+". O último sprite válido é o índice "+(this.frames.length-1));
-        this.spriteIndex=index;
     }
 }
 
