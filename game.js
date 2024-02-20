@@ -13,6 +13,6 @@ class Game extends Engine{
         let gamePlay =new GamePlay('GAME_PLAY');
         this.registerScene(gamePlay);
 
-        this.start(); // inicia o gameloop  
+        this.startScene(); // inicia o gameloop  
     }
 }

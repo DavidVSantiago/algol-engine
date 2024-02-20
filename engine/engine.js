@@ -20,8 +20,8 @@ class Engine{
     }
 
     /** inicia o gameloop */
-    start(){
-        requestAnimationFrame(this.gameloop);
+    startScene(){
+        this.sceneManager.getActualScene().startScene(this.gameloop);
     }
 
     registerScene(scene){

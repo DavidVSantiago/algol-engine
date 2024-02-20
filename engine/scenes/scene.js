@@ -5,6 +5,7 @@ class Scene{
     constructor(name){
         this.name=name; // toda Scene possui um nome associado a ela
         this.spriteBatchList = []; // array de states da Cena
+        this.allSpriteList = []; // lista de todos os sprites da cena (usada para checar o carregamento das imagens)
         this.actualState;
         this.res = Resources.getInstance();
     }
@@ -15,6 +16,23 @@ class Scene{
         if(this.spriteBatchList.length==1) this.changeState(stateIndex); // se for o primeiro Estado registrado, o configura como atual
     }
     
+    startScene(gameloopCallBack){
+        const images = [this.img]; // Adicione outras imagens aqui
+
+        Promise.all(
+            this.allSpriteList.map(
+                sprite => new Promise(
+                    resolve => sprite.img.onload = resolve()
+                )
+            )
+        ).then(() => {
+            // Todas as imagens estão carregadas!
+            // ... Inicie o jogo ...
+            console.log(img);
+            requestAnimationFrame(gameloopCallBack);    
+        });
+    }
+
     /* Altera o State atual*/
     changeState(stateIndex){
         if(stateIndex>=this.spriteBatchList.length)
@@ -24,6 +42,7 @@ class Scene{
 
     registerSprite(sprite,stateIndex){
         this.spriteBatchList[stateIndex].putSprite(sprite);
+        this.allSpriteList.push(sprite);
     }
 
     handleEvents(){

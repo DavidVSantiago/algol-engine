@@ -4,7 +4,7 @@ import SimpleSprite from './simple_sprite.js';
 class MultiSimpleSprite extends SimpleSprite{
     /**
      * Construtor
-     * @param {String} fileSource - caminho do arquivo da imagem com os sprites
+     * @param {String} fileSource local do arquivo da imagem a ser carregada
      */
     constructor(fileSource){
         super(fileSource);

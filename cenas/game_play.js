@@ -16,10 +16,11 @@ class GamePlay extends SimpleScene{
 
         // cria os sprites dessa cena
         this.chao = new SimpleSprite('assets/imgs/fundo.png');
-        this.chao.init(); // obrigatório
+        this.chao.init();
+        this.braid = new MultiAnimatedSprite('assets/imgs/braid-jump-teste.png');
+
         //this.braid = new SimpleSprite('assets/imgs/braid-died.png');
-        this.braid = new MultiSimpleSprite('assets/imgs/sprites.png');
-        this.braid.init(1,15,0);
+        this.braid.init(15,3,0);
         //this.braid.setSpriteIndex(0);
         
         // coloca cada sprite nos batchs dos seus respectivos STATES

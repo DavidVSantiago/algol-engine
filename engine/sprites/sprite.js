@@ -1,46 +1,52 @@
 "use strict";
-
 import Resources from '../resources.js';
+
 
 /** Implementação abstrata de um Sprite.
  * Elementos básicos de todos os Sprites. */
 class Sprite{
-    /** Construtor*/
-    constructor(fileSource){
-        this.loaded=false; // flag de sinalização de carregamento da imagem do sprite
+
+    /** Construtor
+     * @param {String} fileSource local do arquivo da imagem a ser carregada
+     */
+    constructor(fileSource){     
+        this.loaded=false;
         this.frames; // array de frames do sprite
-        this.img=new Image(); // cria um obj de imagem
-        this.img.src = fileSource; // carrega a imagem no obj
+        this.img=new Image(); // armazena o arquivo de imagem de onde serão extraídos os frames
+        this.img.src=fileSource;
         this.posX=0.0;
         this.posY=0.0;
         this.speedX=0.0;
         this.speedY=0.0;
     }
-    /**
-     * Inicializa o o array de sprites
-     * @param {Number} lines numero de linhas no array (cada linha armazena 1 sprite)
-     */
-    initFramesList(lines){
-        this.frames = new Array(lines);
-        for (let i = 0; i < lines; i++) {
-            this.frames[i] = [];
-        }
-    }
+
+    
+    //---------------------------------------------------------------------------------------------------------
+    // GETTERS & SETTERS
+    //---------------------------------------------------------------------------------------------------------
+    
     /** Retorna a posição X do Spite na tela.*/
     getPosX(){return this.posX;} 
     /** Retorna a posição Y do Spite na tela.*/
     getPosY(){return this.posY;}
     /** Retorna o frame correto para a renderização. */
     getFrame(deltaTime){} // abstract
-    /** Renderiza o sprite na tela.
-     * @param {CanvasRenderingContext2D } ctx - contexto de renderização. */
-    render(ctx,deltaTime){
-        if(this.loaded)// apenas renderiza se o Sprite estiver carregado (evita falhas de exibição)
-            ctx.drawImage(this.getFrame(deltaTime),Math.floor(this.posX),Math.floor(this.posY));
+    
+    //---------------------------------------------------------------------------------------------------------
+    // MÉTODOS 
+    //---------------------------------------------------------------------------------------------------------
+   
+    /** Inicializa o o array de frames do sprite
+     * @param {Number} lineNumbers numero de linhas no array (cada linha é um sprite)
+     */
+    initFramesList(lineNumbers){
+        this.frames = new Array(lineNumbers);
+        for (let i = 0; i < lineNumbers; i++) {
+            this.frames[i] = [];
+        }
     }
-
-    /**
-     * Obtém um pedaço menor de uma imagem maior
+    
+    /** Obtém um pedaço menor de uma imagem maior
      * @param {Image} img imagem a ser recortada
      * @param {Number} x - coordenada X do ponto de origem do recorte
      * @param {Number} y - coordenada Y do ponto de origem do recorte
@@ -57,6 +63,12 @@ class Sprite{
         return this.subImgBuffer;
     }
 
+    /** Verifica se a imagem está vazia (com todos os pixels transparentes)
+     * @param {Image} img imagem a ser verificada
+     * @param {Number} w - largura da imagem
+     * @param {Number} h - altura da imagem
+     * @return {Boolean} se a imagem está ou não vazia
+     */
     checkEmptyImage(imgBuffer,w,h){
         // obtém os dados da imagem
         let imgData = imgBuffer.getContext('2d').getImageData(0,0,w,h);
@@ -69,6 +81,19 @@ class Sprite{
         // Se todos os pixels forem transparentes, a imagem está vazia
         return true;
     }
+
+    //---------------------------------------------------------------------------------------------------------
+    // MÉTODOS DO GAMELOOP
+    //---------------------------------------------------------------------------------------------------------
+   
+    /** Renderiza o sprite na tela
+     * @param {CanvasRenderingContext2D} ctx contexto de renderização
+     * @param {Number} deltaTime tempo decorrido desde o último quadro renderizado na tela*/
+    render(ctx,deltaTime){
+        if(this.loaded)// apenas renderiza se o Sprite estiver carregado (evita falhas de exibição)
+            ctx.drawImage(this.getFrame(deltaTime),Math.floor(this.posX),Math.floor(this.posY));
+    }
+
 }
 
 export default Sprite;
