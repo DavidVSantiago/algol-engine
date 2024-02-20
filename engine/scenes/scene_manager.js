@@ -1,23 +1,29 @@
-class SceneManager{
-    constructor(){
-        this.scenesList=[];
-        this.actualScene;
-    }
+import LoadingScene from "./types/loading_scene.js";
 
-    registerScene(scene){
-        this.scenesList.push(scene);
-        // se a cena for a primeira a ser registrada, ela será a atual
-        if(this.scenesList.length==1) this.actualScene=scene;
+class SceneManager{
+    static singleton;
+    static getInstance() {
+
+        if (!this.singleton) {
+            this.singleton = new this();
+        }
+        return this.singleton;
     }
-    
-    getActualScene(){
+    constructor(){
+        this.actualScene;
+        this.gameLoopCallBack; // necessário para parar e retomar o gameloop
+        this.loadingScene = new LoadingScene('LOADING'); // cena usada entre os carregamentos das cenas
+        this.changeScene(this.loadingScene);
+    }
+    getActualScene=()=>{
         return this.actualScene;
     }
-
-    setActualScene(sceneName){
-        for(let i=0;i<this.scenesList.length;i++){
-            if(this.scenesList[i].name==sceneName) this.actualScene=startScene;
-        }
+    startScene=(scene)=>{
+        this.changeScene(this.loadingScene);
+        scene.initScene(this.changeScene); // Obrigatório para carregar todos os sprites
+    }
+    changeScene=(scene)=>{
+        this.actualScene=scene;
     }
 }
 export default SceneManager;

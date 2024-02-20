@@ -2,9 +2,9 @@ import {SimpleScene,SimpleSprite,AnimatedSprite} from '../engine/engine.js';
 import MultiAnimatedSprite from '../engine/sprites/types/multi_animated_sprite.js';
 import MultiSimpleSprite from '../engine/sprites/types/multi_simple_sprite.js';
 
-class GamePlay extends SimpleScene{
+class Tela2 extends SimpleScene{
     constructor(){
-        super('GAME_PLAY');
+        super('TELA 2');
 
         // define os ESTADOS e seus indices
         this.STATE_PLAY=0; // devem começar com zero!!
@@ -14,11 +14,13 @@ class GamePlay extends SimpleScene{
         this.registerState(this.STATE_PLAY);
 
         // cria os sprites dessa cena
-        this.chao = new SimpleSprite('assets/imgs/fundo.png');
+        this.chao = new SimpleSprite('assets/imgs/fundo2.png');
         this.b1 = new SimpleSprite('assets/imgs/braid-died.png');
-        this.b2 = new SimpleSprite('assets/imgs/braid-jump-teste.png',130,150,130,150);
-        this.b2.posX=150;
-        this.b2.posY=200;
+        this.b2 = new AnimatedSprite('assets/imgs/braid-jump-teste.png',15,3,0);
+        this.b2.posX=50;
+        this.b2.posY=300;
+        this.b1.posX=450;
+        this.b1.posY=100;
        // this.braid = new MultiAnimatedSprite('assets/imgs/braid-jump-teste.png',15,3,0);
         
         // coloca cada sprite nos batchs dos seus respectivos STATES
@@ -34,4 +36,4 @@ class GamePlay extends SimpleScene{
 
     }
 }
-export default GamePlay;
+export default Tela2;

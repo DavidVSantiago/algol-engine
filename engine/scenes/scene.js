@@ -2,35 +2,24 @@ import SpriteBatch from '../sprites/sprite_batch.js';
 import Resources from '../resources.js';
 
 class Scene{
+
     constructor(name){
         this.name=name; // toda Scene possui um nome associado a ela
         this.spriteBatchList = []; // array de states da Cena
-        this.allSpriteList = []; // lista de todos os sprites da cena (usada para checar o carregamento das imagens)
         this.actualState;
         this.res = Resources.getInstance();
+        this.allSpriteList = []; // lista de todos os sprites da cena (usada para checar o carregamento das imagens)
+        this.promisesList=[]; // lista de todas as promisse de recursos da cena
     }
+
+    //---------------------------------------------------------------------------------------------------------
+    // MÉTODOS 
+    //---------------------------------------------------------------------------------------------------------
 
     /** Registra um novo Estado e o seu spriteBatch associado */
     registerState(stateIndex){
         this.spriteBatchList.push(new SpriteBatch(stateIndex));
         if(this.spriteBatchList.length==1) this.changeState(stateIndex); // se for o primeiro Estado registrado, o configura como atual
-    }
-    
-    startScene(gameloopCallBack){
-        const images = [this.img]; // Adicione outras imagens aqui
-
-        Promise.all(
-            this.allSpriteList.map(
-                sprite => new Promise(
-                    resolve => sprite.img.onload = resolve()
-                )
-            )
-        ).then(() => {
-            // Todas as imagens estão carregadas!
-            // ... Inicie o jogo ...
-            console.log(img);
-            requestAnimationFrame(gameloopCallBack);    
-        });
     }
 
     /* Altera o State atual*/
@@ -45,6 +34,10 @@ class Scene{
         this.allSpriteList.push(sprite);
     }
 
+    //---------------------------------------------------------------------------------------------------------
+    // MÉTODOS DO GAMELOOP
+    //---------------------------------------------------------------------------------------------------------
+
     handleEvents(){
         if(this.res.vk_up) console.log('Tecla cima');
         if(this.res.vk_down) console.log('Tecla baixo');
@@ -57,9 +50,9 @@ class Scene{
         
     }
 
-    render(deltaTime){
+    render(){
         // renderiza o srpitebatch do stado atual
-        this.actualState.render(deltaTime);
+        this.actualState.render();
     }
 }
 

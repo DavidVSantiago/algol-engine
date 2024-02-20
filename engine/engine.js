@@ -4,6 +4,7 @@ import SpriteBatch from './sprites/sprite_batch.js';
 import SimpleScene from './scenes/types/simple_scene.js';
 import SceneManager from './scenes/scene_manager.js';
 import Resources from './resources.js';
+import LoadingScene from './scenes/types/loading_scene.js';
 
 
 class Engine{
@@ -12,20 +13,13 @@ class Engine{
         this.res.init(width,height);
 
         // atributos da Engine
-        this.sceneManager = new SceneManager();
-        
+        this.sceneManager = SceneManager.getInstance();
+        this.sceneManager.gameLoopCallBack = this.gameloop; // o SceneManager precisa controlar o gameloop
         // registra os eventos de pressionamento e soltura das teclas
         window.addEventListener('keydown', this.keyPressed, false);
         window.addEventListener('keyup', this.keyReleased, false);
-    }
 
-    /** inicia o gameloop */
-    startScene(){
-        this.sceneManager.getActualScene().startScene(this.gameloop);
-    }
-
-    registerScene(scene){
-        this.sceneManager.registerScene(scene);
+        requestAnimationFrame(this.gameloop);
     }
 
     /*****************************************************************************/
@@ -42,17 +36,17 @@ class Engine{
         this.sceneManager.getActualScene().update();
     }
 
-    render(deltaTime){
+    render(){
         //console.log('render - ENGINE');
-        this.sceneManager.getActualScene().render(deltaTime);
+        this.sceneManager.getActualScene().render();
     }
     gameloop=()=>{
         let tempoAtual = performance.now();
-        let deltaTime = (tempoAtual - this.tempoAnterior) ;//* (6e-2);
+        this.res.deltaTime = (tempoAtual - this.tempoAnterior) ;//* (6e-2);
 
         this.handleEvents();
         this.update();
-        this.render(deltaTime);
+        this.render();
 
         this.tempoAnterior = tempoAtual; // atualiza o tempo anterior (para o próximo quadro)
         requestAnimationFrame(this.gameloop);
@@ -68,6 +62,9 @@ class Engine{
             case 39: this.res.vk_right = true; break; // Right key
             case 40: this.res.vk_down = true; break; // Down key
             case 27: this.res.vk_esc = true; break; // Esc key
+            case 65: this.res.vk_a = true; break; // a
+            case 83: this.res.vk_s = true; break; // s
+            case 68: this.res.vk_d = true; break; // d
         }
     }
     keyReleased=(e)=>{
@@ -77,6 +74,9 @@ class Engine{
             case 39: this.res.vk_right = false; break; // Right key
             case 40: this.res.vk_down = false; break; // Down key
             case 27: this.res.vk_esc = false; break; // Esc key
+            case 65: this.res.vk_a = false; break; // a
+            case 83: this.res.vk_s = false; break; // s
+            case 68: this.res.vk_d = false; break; // d
         }
     }
 }
