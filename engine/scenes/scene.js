@@ -6,7 +6,7 @@ class Scene{
     constructor(name){
         this.name=name; // toda Scene possui um nome associado a ela
         this.spriteBatchList = []; // array de states da Cena
-        this.actualState;
+        this.actualBatch;
         this.res = Resources.getInstance();
         this.allSpriteList = []; // lista de todos os sprites da cena (usada para checar o carregamento das imagens)
         this.promisesList=[]; // lista de todas as promisse de recursos da cena
@@ -22,12 +22,12 @@ class Scene{
         if(this.spriteBatchList.length==1) this.changeState(stateIndex); // se for o primeiro Estado registrado, o configura como atual
     }
 
-    /* Altera o State atual*/
+    /** Altera o State atual*/
     changeState(stateIndex){
         if(stateIndex>=this.spriteBatchList.length)
             throw new Error("O registro dos STATES deve obedecer a ordem dos seus índices!");
-        this.actualState = this.spriteBatchList[stateIndex];
-    }  
+        this.actualBatch = this.spriteBatchList[stateIndex];
+    }
 
     registerSprite(sprite,stateIndex){
         this.spriteBatchList[stateIndex].putSprite(sprite);
@@ -52,7 +52,7 @@ class Scene{
 
     render(){
         // renderiza o srpitebatch do stado atual
-        this.actualState.render();
+        this.actualBatch.render();
     }
 }
 

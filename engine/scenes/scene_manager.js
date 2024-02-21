@@ -11,7 +11,6 @@ class SceneManager{
     }
     constructor(){
         this.actualScene;
-        this.gameLoopCallBack; // necessário para parar e retomar o gameloop
         this.loadingScene = new LoadingScene('LOADING'); // cena usada entre os carregamentos das cenas
         this.changeScene(this.loadingScene);
     }

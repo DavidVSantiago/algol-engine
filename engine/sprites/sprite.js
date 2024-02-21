@@ -1,7 +1,6 @@
 "use strict";
 import Resources from '../resources.js';
 
-
 /** Implementação abstrata de um Sprite.
  * Elementos básicos de todos os Sprites. */
 class Sprite{
