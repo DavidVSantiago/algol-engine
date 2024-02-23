@@ -16,7 +16,7 @@ class Tela2 extends SimpleScene{
         // cria os sprites dessa cena
         this.chao = new SimpleSprite('assets/imgs/fundo2.png');
         this.b1 = new SimpleSprite('assets/imgs/braid-died.png');
-        this.b2 = new AnimatedSprite('assets/imgs/braid-jump-teste.png',15,3,0);
+        this.b2 = new MultiAnimatedSprite('assets/imgs/braid-jump-teste.png',15,3,0);
         this.b2.posX=50;
         this.b2.posY=300;
         this.b1.posX=450;

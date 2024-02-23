@@ -25,7 +25,7 @@ class Sprite{
     /** Retorna a posição Y do Spite na tela.*/
     getPosY(){return this.posY;}
     /** Retorna o frame correto para a renderização. */
-    getFrame(deltaTime){} // abstract
+    getFrame(){} // abstract
     
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS 

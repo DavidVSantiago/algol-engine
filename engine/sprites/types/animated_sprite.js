@@ -12,9 +12,7 @@ class AnimatedSprite extends MultiSimpleSprite {
      * @param {Number} line linha da imagem de onde serão retirados os frames
      */
     constructor(fileSource, twNumbers, thNumbers, line) {
-        super(fileSource); // OBRIGATÓRIO
-        this.twNumbers = twNumbers;
-        this.thNumbers = thNumbers;
+        super(fileSource,twNumbers, thNumbers,0); // OBRIGATÓRIO
         this.line = line;
         this.frameIndex = 0;
         this.acumulator = 0;

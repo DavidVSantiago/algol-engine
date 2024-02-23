@@ -9,8 +9,7 @@ class SimpleSprite extends Sprite {
      * @param {Number} cx - coordenada X do ponto de origem do recorte
      * @param {Number} cy - coordenada Y do ponto de origem do recorte
      * @param {Number} cw - largura do recorte
-     * @param {Number} ch - altura do recorte
-     */
+     * @param {Number} ch - altura do recorte */
     constructor(fileSource, cx = 0, cy = 0, cw = 0, ch = 0) {
         super(); // OBRIGATÓRIO
         this.cx = cx; this.cy = cy; // coordenadas do ponto de corte da imagem
@@ -33,8 +32,7 @@ class SimpleSprite extends Sprite {
     //---------------------------------------------------------------------------------------------------------
 
     /** Inicializa o processamento de recorte dos frames do sprite
-    * só pode ser invocada após a imagem ser totalmente carregada (Image.onload)
-    */
+    * só pode ser invocada após a imagem ser totalmente carregada (Image.onload) */
     init() {
         this.loaded = true; // sinaliza à flag
         this.initFramesList(1) //inicializa a lista de frames (this.frames)
@@ -51,27 +49,25 @@ class SimpleSprite extends Sprite {
 
     /** Obtém um pedaço menor de uma imagem maior
      * @param {Image} img imagem a ser recortada
-     * @param {Number} x - coordenada X do ponto de origem do recorte
-     * @param {Number} y - coordenada Y do ponto de origem do recorte
-     * @param {Number} w - largura do recorte
-     * @param {Number} h - altura do recorte
-     * @return {OffscreenCanvas} o pedaço da imagem original
-     */
-    getSubImage(img, x, y, w, h) {
+     * @param {Number} cx - coordenada X do ponto de origem do recorte
+     * @param {Number} cy - coordenada Y do ponto de origem do recorte
+     * @param {Number} cw - largura do recorte
+     * @param {Number} ch - altura do recorte
+     * @return {OffscreenCanvas} o pedaço recortado da imagem original */
+    getSubImage(img, cx, cy, cw, ch) {
         let imgBuffer = new OffscreenCanvas(img.width, img.height);
         imgBuffer.getContext('2d').drawImage(img, 0, 0);
-        let subImgData = imgBuffer.getContext('2d').getImageData(x, y, w, h);
-        this.subImgBuffer = new OffscreenCanvas(w, h);
+        let subImgData = imgBuffer.getContext('2d').getImageData(cx, cy, cw, ch);
+        this.subImgBuffer = new OffscreenCanvas(cw, ch);
         this.subImgBuffer.getContext('2d').putImageData(subImgData, 0, 0);
         return this.subImgBuffer;
     }
 
     /** Verifica se a imagem está vazia (com todos os pixels transparentes)
-     * @param {Image} img imagem a ser verificada
+     * @param {OffscreenCanvas} imgBuffer imagem a ser verificada
      * @param {Number} w - largura da imagem
      * @param {Number} h - altura da imagem
-     * @return {Boolean} se a imagem está ou não vazia
-     */
+     * @return {Boolean} se a imagem está ou não vazia */
     checkEmptyImage(imgBuffer, w, h) {
         // obtém os dados da imagem
         let imgData = imgBuffer.getContext('2d').getImageData(0, 0, w, h);
@@ -81,7 +77,7 @@ class SimpleSprite extends Sprite {
             if (imgData.data[i + 3] == 255)
                 return false;// Se encontrar um pixel não transparente, a imagem não está vazia
         }
-        // Se todos os pixels forem transparentes, a imagem está vazia
+        // Se todos os pixels forem transparentes a imagem está vazia
         return true;
     }
 }
