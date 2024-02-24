@@ -13,6 +13,7 @@ class SceneManager{
         this.actualScene;
         this.loadingScene = new LoadingScene('LOADING'); // cena usada entre os carregamentos das cenas
         this.loadingScene.startLoadResources(this.changeScene);
+        this.actualScene=this.loadingScene;
     }
     getActualScene=()=>{
         return this.actualScene;

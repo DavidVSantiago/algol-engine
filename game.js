@@ -1,7 +1,5 @@
-import {Engine, SceneManager} from './engine/engine.js';
 import GamePlay from './cenas/game_play.js';
-import Tela2 from './cenas/tela_2.js';
-import Tela3 from './cenas/tela_3.js';
+import {Engine, SceneManager} from './engine/engine.js';
 
 window.addEventListener('load',()=>{
     window.game = new Game();
@@ -18,20 +16,5 @@ class Game extends Engine{
 
     handleEvents(){
         super.handleEvents();
-        if(this.res.vk_a){
-            let gamePlay =new GamePlay();
-            gamePlay.start();
-            return;
-        }
-        if(this.res.vk_s){
-            let tela2 =new Tela2();
-            tela2.start();
-            return;
-        }
-        if(this.res.vk_d){
-            let tela3 =new Tela3();
-            tela3.start();
-            return;
-        }
     }
 }

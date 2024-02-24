@@ -24,5 +24,12 @@ class LoadingScene extends Scene{
         this.registerSprite(this.black,0);
         this.registerSprite(this.loading,0);
     }
+
+    /** Invocado após todos os recursos serem totalmente carregados */
+    init() { // overriding
+        let resources = Resources.getInstance();
+        this.loading.posX=(resources.canvas.width/2)-(this.loading.img.width/2);
+        this.loading.posY=(resources.canvas.height/2)-(this.loading.img.height/2);
+    } 
 }
 export default LoadingScene;
