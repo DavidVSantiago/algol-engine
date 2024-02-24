@@ -10,7 +10,7 @@ import LoadingScene from './scenes/types/loading_scene.js';
 class Engine{
     constructor(width,height){
         this.res = Resources.getInstance();
-        this.res.init(width,height);
+        this.res.init(width,height); // inicializa os recursos da Engine
 
         // atributos da Engine
         this.sceneManager = SceneManager.getInstance();

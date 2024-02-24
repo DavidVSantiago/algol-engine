@@ -11,7 +11,6 @@ class SimpleProcSprite extends Sprite {
      */
     constructor(offCanvas) {
         super();
-        this.img={onload(){}}; // necessário para as promisses funcionarem
         this.offCanvas = offCanvas;
         this.init();
      

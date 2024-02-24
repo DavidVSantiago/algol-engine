@@ -9,6 +9,7 @@ class Resources {
         return this.singleton;
     }
 
+    /** Inicializa os recursos do Singleton - uso privado interno */
     init(width, height) {
         this.vk_up = false, this.vk_down = false, this.vk_left = false, this.vk_right = false, this.vk_esc = false;
         this.deltatime;
@@ -21,6 +22,7 @@ class Resources {
         this.offCtx = this.offscreen.getContext("2d");
     }
 
+    /** limpa a tela */
     clearScreen() {
         this.offCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

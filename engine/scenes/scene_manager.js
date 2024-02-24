@@ -12,14 +12,15 @@ class SceneManager{
     constructor(){
         this.actualScene;
         this.loadingScene = new LoadingScene('LOADING'); // cena usada entre os carregamentos das cenas
-        this.changeScene(this.loadingScene);
+        this.loadingScene.startLoadResources(this.changeScene);
     }
     getActualScene=()=>{
         return this.actualScene;
     }
+    /** Dá início ao processo de inicialização da cena */
     startScene=(scene)=>{
-        this.changeScene(this.loadingScene);
-        scene.initScene(this.changeScene); // Obrigatório para carregar todos os sprites
+        this.changeScene(this.loadingScene); // muda a cena para a tela de carregamento
+        scene.startLoadResources(this.changeScene); // Obrigatório para carregar todos os sprites
     }
     changeScene=(scene)=>{
         this.actualScene=scene;

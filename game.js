@@ -20,15 +20,18 @@ class Game extends Engine{
         super.handleEvents();
         if(this.res.vk_a){
             let gamePlay =new GamePlay();
-            SceneManager.getInstance().startScene(gamePlay);
+            gamePlay.start();
+            return;
         }
         if(this.res.vk_s){
             let tela2 =new Tela2();
-            SceneManager.getInstance().startScene(tela2);
+            tela2.start();
+            return;
         }
         if(this.res.vk_d){
             let tela3 =new Tela3();
-            SceneManager.getInstance().startScene(tela3);
+            tela3.start();
+            return;
         }
     }
 }
