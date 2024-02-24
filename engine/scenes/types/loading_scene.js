@@ -25,6 +25,10 @@ class LoadingScene extends Scene{
         this.registerSprite(this.loading,0);
     }
 
+    //---------------------------------------------------------------------------------------------------------
+    // MÉTODOS 
+    //---------------------------------------------------------------------------------------------------------
+
     /** Invocado após todos os recursos serem totalmente carregados */
     init() { // overriding
         let resources = Resources.getInstance();

@@ -4,10 +4,13 @@ import SpriteBatch from './sprites/sprite_batch.js';
 import SimpleScene from './scenes/types/simple_scene.js';
 import SceneManager from './scenes/scene_manager.js';
 import Resources from './resources.js';
-import LoadingScene from './scenes/types/loading_scene.js';
 
 
 class Engine{
+    /**
+     * Construtor
+     * @param {Number} width - largura da tela
+     * @param {Number} height - altura da tela */
     constructor(width,height){
         this.res = Resources.getInstance();
         this.res.init(width,height); // inicializa os recursos da Engine
@@ -40,6 +43,7 @@ class Engine{
         //console.log('render - ENGINE');
         this.sceneManager.getActualScene().render();
     }
+
     gameloop=()=>{
         let tempoAtual = performance.now();
         this.res.deltaTime = (tempoAtual - this.tempoAnterior) ;//* (6e-2);

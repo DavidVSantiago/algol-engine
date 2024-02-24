@@ -33,7 +33,7 @@ class SimpleSprite extends Sprite {
 
     /** Inicializa o processamento de recorte dos frames do sprite
     * só pode ser invocada após a imagem ser totalmente carregada (Image.onload) */
-    init() {
+    init() { // override
         this.loaded = true; // sinaliza à flag
         this.initFramesList(1) //inicializa a lista de frames (this.frames)
         if (this.cw == 0) // se a largura do recorte não for passado...

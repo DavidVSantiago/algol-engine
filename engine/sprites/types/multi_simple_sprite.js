@@ -25,6 +25,9 @@ class MultiSimpleSprite extends SimpleSprite {
     getFrame() { // overriding
         return this.frames[this.spriteIndex][0];
     }
+    
+    /** Muda o índice do Sprite
+     * @param {Number} index indice do sprite a ser renderizado */
     setSpriteIndex(index) {
         if (index >= this.frames.length)
             throw new Error("Tentativa inváida de mudança de sprite na imagem " + this.img.src + ". O último sprite válido é o índice " + (this.frames.length - 1));

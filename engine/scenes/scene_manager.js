@@ -1,7 +1,20 @@
+"use strict";
 import LoadingScene from "./types/loading_scene.js";
 
-class SceneManager{
+class SceneManager {
     static singleton;
+    constructor() {
+        this.actualScene;
+        this.loadingScene = new LoadingScene('LOADING'); // cena usada entre os carregamentos das cenas
+        this.loadingScene.startLoadResources(this.changeScene);
+        this.actualScene = this.loadingScene;
+    }
+
+    //---------------------------------------------------------------------------------------------------------
+    // GETTERS & SETTERS
+    //---------------------------------------------------------------------------------------------------------
+
+    /** Retorna o singleton dessa classe */
     static getInstance() {
 
         if (!this.singleton) {
@@ -9,22 +22,27 @@ class SceneManager{
         }
         return this.singleton;
     }
-    constructor(){
-        this.actualScene;
-        this.loadingScene = new LoadingScene('LOADING'); // cena usada entre os carregamentos das cenas
-        this.loadingScene.startLoadResources(this.changeScene);
-        this.actualScene=this.loadingScene;
-    }
-    getActualScene=()=>{
+
+    /** Retorna a cena atual a ser renderizada */
+    getActualScene = () => {
         return this.actualScene;
     }
-    /** Dá início ao processo de inicialização da cena */
-    startScene=(scene)=>{
-        this.changeScene(this.loadingScene); // muda a cena para a tela de carregamento
+
+    //---------------------------------------------------------------------------------------------------------
+    // MÉTODOS
+    //---------------------------------------------------------------------------------------------------------
+
+    /** Dá início ao processo de inicialização da cena
+    * @param {Scene} scene cena ser definida como atual */
+    startScene = (scene) => {
+        this.changeScene(this.loadingScene); // muda a cena para a tela de carregamento (intermediária)
         scene.startLoadResources(this.changeScene); // Obrigatório para carregar todos os sprites
     }
-    changeScene=(scene)=>{
-        this.actualScene=scene;
+
+    /** Altera a cena atual
+    * @param {Scene} scene cena ser definida como atual */
+    changeScene = (scene) => {
+        this.actualScene = scene;
     }
 }
 export default SceneManager;

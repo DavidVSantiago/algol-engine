@@ -36,6 +36,9 @@ class AnimatedSprite extends MultiSimpleSprite {
         }
         return this.frames[this.spriteIndex][this.frameIndex];
     }
+
+    /** Muda o índice do frame
+    * @param {Number} index índice do frame a ser renderizado para um determinado sprite*/
     setFrameIndex(index) {
         if (index >= this.frames[this.spriteIndex].length)
             throw new Error("Tentativa inváida de mudança de frame do sprite na imagem " + this.img.src + ". O último frame válido é o índice " + (this.frames.length - 1));

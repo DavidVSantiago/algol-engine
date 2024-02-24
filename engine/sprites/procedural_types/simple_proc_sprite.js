@@ -12,8 +12,6 @@ class SimpleProcSprite extends Sprite {
     constructor(offCanvas) {
         super();
         this.offCanvas = offCanvas;
-        this.init();
-     
     }
 
     //---------------------------------------------------------------------------------------------------------

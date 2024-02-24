@@ -31,6 +31,7 @@ class Sprite{
     // MÉTODOS 
     //---------------------------------------------------------------------------------------------------------
 
+    /** Invocado após os recursos da imagem serem todos carregados */
     init() {} // abstract
 
     /** Inicializa o o array de frames do sprite
