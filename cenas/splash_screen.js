@@ -1,25 +1,17 @@
-import { SimpleScene, SimpleSprite } from "../engine/engine.js";
+import {SimpleScene,SimpleSprite,AnimatedSprite, SceneManager} from '../engine/engine.js';
+import GamePlay from './game_play.js';
 
-class GamePlay extends SimpleScene{
+class SplashScreen extends SimpleScene{
     constructor(){
-        super('GAME_PLAY');
-
-        // define os ESTADOS e seus indices
-        this.STATE_PLAY=0; // devem começar com zero!!
-        this.STATE_PAUSE=1;
-
+        super('Splash');
         // registra os ESTADOS
-        this.registerState(this.STATE_PLAY);
+        this.registerState(0);
 
         // cria os sprites dessa cena
-        this.chao = new SimpleSprite('assets/imgs/fundo.png');
-        this.b1 = new SimpleSprite('assets/imgs/braid-died.png');
-        this.b2 = new SimpleSprite('assets/imgs/braid-jump-teste.png',130,150,130,150);
-        
+        this.bg = new SimpleSprite('assets/imgs/splash.png');
+    
         // coloca cada sprite nos batchs dos seus respectivos STATES
-        this.registerSprite(this.chao,this.STATE_PLAY);
-        this.registerSprite(this.b1,this.STATE_PLAY);
-        this.registerSprite(this.b2,this.STATE_PLAY);
+        this.registerSprite(this.bg,0);
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -28,27 +20,27 @@ class GamePlay extends SimpleScene{
 
     /** Invocado após todos os recursos serem totalmente carregados */
     onInit() { // overriding
-        this.b2.posX=150;
-        this.b2.posY=200;
-        console.log("GAME onInit()");
-    } 
+        console.log("SPLASH onInit()");
+    }
+    
     /** Invocado após a cena aparecer na tela */
     onShow(){ // overriding
-        console.log("GAME onShow()");
+        console.log("SPLASH onShow()");
+        let gamePlay = new GamePlay();
+        gamePlay.scheduleStart(1000,this);
     }
 
     start(old){
         super.start(old);
-        console.log("GAME start()");
+        console.log("SPLASH start()");
     }
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS DO GAMELOOP
     //---------------------------------------------------------------------------------------------------------
 
     // Sobrescreve para especificar como as teclas serão tratadas nessa cena
-    handleEvents=()=>{
-      
+    handleEvents(){
+       
     }
 }
-
-export default GamePlay;
+export default SplashScreen;

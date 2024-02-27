@@ -9,7 +9,7 @@ import Scene from '../scene.js';
 class LoadingScene extends Scene{
     /** construtor
     * @param {String} name nome único da cena */
-    constructor(name){
+    constructor(name, gameLoopCallBack){
         super(name); // OBRIGATÓRIO
 
         let resources = Resources.getInstance();
@@ -35,10 +35,15 @@ class LoadingScene extends Scene{
     //---------------------------------------------------------------------------------------------------------
 
     /** Invocado após todos os recursos serem totalmente carregados */
-    init() { // overriding
+    onInit() { // overriding
         let resources = Resources.getInstance();
         this.loading.posX=(resources.canvas.width/2)-(this.loading.img.width/2);
         this.loading.posY=(resources.canvas.height/2)-(this.loading.img.height/2);
-    } 
+        console.log("LOADING onInit()");
+    }
+    /** Invocado após a cena aparecer na tela */
+    onShow(){ // overriding
+        console.log("LOADING onShow()");
+    }
 }
 export default LoadingScene;

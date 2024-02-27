@@ -10,6 +10,7 @@ class SimpleScene extends Scene {
     * @param {String} name nome único da cena */
     constructor(name) {
         super(name);
+        this.sceneManager = SceneManager.getInstance();
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -17,9 +18,18 @@ class SimpleScene extends Scene {
     //---------------------------------------------------------------------------------------------------------
 
     /** Dá início ao processo de carregamento da cena */
-    start(){
-        SceneManager.getInstance().startScene(this);
+    start(old){
+        this.sceneManager.startScene(this,old);
     }
+
+    /** Agenda o início do processo de carregamento da cena 
+    * @param {Number} time tempo, em milissegundos, de espera até o início da cena */
+    scheduleStart=(time,old) => {
+        setTimeout(() => {
+            this.start(old);
+        },time);
+    }
+    
     
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS DO GAMELOOP

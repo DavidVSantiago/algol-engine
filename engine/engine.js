@@ -21,7 +21,7 @@ class Engine{
 
         // atributos da Engine
         this.sceneManager = SceneManager.getInstance();
-        this.sceneManager.gameLoopCallBack = this.gameloop; // o SceneManager precisa controlar o gameloop
+
         // registra os eventos de pressionamento e soltura das teclas
         window.addEventListener('keydown', this.keyPressed, false);
         window.addEventListener('keyup', this.keyReleased, false);
