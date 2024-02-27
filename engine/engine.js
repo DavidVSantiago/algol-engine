@@ -1,3 +1,5 @@
+"use strict";
+
 import SimpleSprite from './sprites/types/simple_sprite.js';
 import AnimatedSprite from './sprites/types/animated_sprite.js';
 import SpriteBatch from './sprites/sprite_batch.js';
@@ -6,6 +8,8 @@ import SceneManager from './scenes/scene_manager.js';
 import Resources from './resources.js';
 
 
+/** Implementação da Game Engine do jogo
+ * Classe abstrata que deve ser herdada para prover suas funcionalidades */
 class Engine{
     /**
      * Construtor
@@ -45,7 +49,7 @@ class Engine{
     }
 
     gameloop=()=>{
-        let tempoAtual = performance.now();
+        let tempoAtual = this.res.getTimeTick();
         this.res.deltaTime = (tempoAtual - this.tempoAnterior) ;//* (6e-2);
 
         this.handleEvents();

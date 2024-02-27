@@ -1,6 +1,9 @@
 "use strict";
+
 import LoadingScene from "./types/loading_scene.js";
 
+/** SINGLETON que gerencia o caregamento e transição entre as cenas do jogo
+ * Classe usada pela maioria das outras classes da engine */
 class SceneManager {
     static singleton;
     constructor() {

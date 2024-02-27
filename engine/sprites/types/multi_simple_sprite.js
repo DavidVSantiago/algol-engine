@@ -1,6 +1,9 @@
+"use strict";
+
 import SimpleSprite from './simple_sprite.js';
 
-/** Implementação de SimpleSprite com suporte para vários frames simples de um mesmo sprite. */
+/** Implementação de SimpleSprite com suporte para vários Sprites, todos com um único frame.
+ * 1-col x n-lines*/
 class MultiSimpleSprite extends SimpleSprite {
     /**
      * Construtor

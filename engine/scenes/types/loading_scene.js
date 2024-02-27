@@ -1,9 +1,14 @@
+"use strict";
+
 import { SimpleSprite } from '../../engine.js';
 import Resources from '../../resources.js';
 import SimpleProcSprite from '../../sprites/procedural_types/simple_proc_sprite.js';
 import Scene from '../scene.js';
 
+/** Implementação de uma cena de carregamento de tela */
 class LoadingScene extends Scene{
+    /** construtor
+    * @param {String} name nome único da cena */
     constructor(name){
         super(name); // OBRIGATÓRIO
 

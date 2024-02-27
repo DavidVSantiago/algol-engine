@@ -1,7 +1,10 @@
+"use strict";
+
 import AnimatedSprite from './animated_sprite.js';
 
 /** Implementação especializada de AnimatedSprite
- * com suporte para vários sprites*/
+ * com suporte para vários sprites e vários frames
+ * n-cols x n-lines*/
 class MultiAnimatedSprite extends AnimatedSprite {
     /** Construtor
      * @param {String} fileSource - caminho do arquivo da imagem com os tiles do sprite

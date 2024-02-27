@@ -1,3 +1,7 @@
+"use strict";
+
+/** SINGLETON que armazena os recursos universais do jogo
+ * Classe usada pela maioria das outras classes da engine */
 class Resources {
     static singleton;
 
@@ -28,5 +32,9 @@ class Resources {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    /** obtém uma amostra de tempo em milissegundos */
+    getTimeTick(){
+        return performance.now();
+    }
 }
 export default Resources;

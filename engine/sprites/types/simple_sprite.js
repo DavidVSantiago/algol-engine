@@ -1,3 +1,5 @@
+"use strict";
+
 import Sprite from '../sprite.js';
 
 /** Implementação mais simples de Sprite de arquivos de imagem.

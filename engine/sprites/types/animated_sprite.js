@@ -1,8 +1,12 @@
+"use strict";
+
 import Resources from '../../resources.js';
 import MultiSimpleSprite from './multi_simple_sprite.js';
 
 /** Implementação especializada de MultiSimpleSprite
- * com suporte para mudança de frame com base no tempo (animação)*/
+ * com suporte para mudança de frame com base no tempo (animação)
+ * um único spritecom vários frames
+ * n-cols x 1-line*/
 class AnimatedSprite extends MultiSimpleSprite {
     /**
      * Construtor

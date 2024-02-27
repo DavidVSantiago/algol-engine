@@ -1,4 +1,5 @@
-import Sprite from './sprite.js';
+"use strict";
+
 import Resources from '../resources.js';
 
 class SpriteBatch{
