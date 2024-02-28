@@ -9,10 +9,14 @@ window.addEventListener('load',()=>{
 class Game extends Engine{
     constructor(){
         super(1000,435);// Obrigatorio. inicializa o jogo especificando as dimensões
+    }
 
+    onCreate(){
+        super.onCreate(); // OBRIGATÓRIO
+        console.log('Chamou');
         // cria e registra as cenas
         let splashScreen =new SplashScreen();
-        splashScreen.start();
+        SceneManager.getInstance().startScene(splashScreen);
     }
 
     handleEvents(){

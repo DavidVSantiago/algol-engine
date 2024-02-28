@@ -21,12 +21,20 @@ class Engine{
 
         // atributos da Engine
         this.sceneManager = SceneManager.getInstance();
+        this.sceneManager.init(this.onCreate.bind(this));
 
         // registra os eventos de pressionamento e soltura das teclas
         window.addEventListener('keydown', this.keyPressed, false);
         window.addEventListener('keyup', this.keyReleased, false);
+    }
 
-        requestAnimationFrame(this.gameloop);
+    /*****************************************************************************/
+    /* MÉTODOS */
+    /*****************************************************************************/
+    
+    /** invoca quando a engine está pronta para iniciar a simulaçao do jogo */
+    onCreate(){
+        requestAnimationFrame(this.gameloop.bind(this));
     }
 
     /*****************************************************************************/
@@ -48,7 +56,7 @@ class Engine{
         this.sceneManager.getActualScene().render();
     }
 
-    gameloop=()=>{
+    gameloop(){
         let tempoAtual = this.res.getTimeTick();
         this.res.deltaTime = (tempoAtual - this.tempoAnterior) ;//* (6e-2);
 
@@ -57,7 +65,7 @@ class Engine{
         this.render();
 
         this.tempoAnterior = tempoAtual; // atualiza o tempo anterior (para o próximo quadro)
-        requestAnimationFrame(this.gameloop);
+        requestAnimationFrame( () =>this.gameloop());
     }
 
     /*****************************************************************************/

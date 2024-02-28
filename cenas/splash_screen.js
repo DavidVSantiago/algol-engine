@@ -26,21 +26,20 @@ class SplashScreen extends SimpleScene{
     /** Invocado após a cena aparecer na tela */
     onShow(){ // overriding
         console.log("SPLASH onShow()");
-        let gamePlay = new GamePlay();
-        gamePlay.scheduleStart(1000,this);
+        
     }
-
-    start(){
-        super.start();
-        console.log("SPLASH start()");
-    }
+    
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS DO GAMELOOP
     //---------------------------------------------------------------------------------------------------------
-
+    
     // Sobrescreve para especificar como as teclas serão tratadas nessa cena
     handleEvents(){
-       
+        if(this.res.vk_a){
+            let gamePlay = new GamePlay();
+            SceneManager.getInstance().startScene(gamePlay);
+        }
     }
 }
+
 export default SplashScreen;

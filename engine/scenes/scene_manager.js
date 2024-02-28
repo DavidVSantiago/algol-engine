@@ -7,10 +7,13 @@ import LoadingScene from "./types/loading_scene.js";
 class SceneManager {
     static singleton;
     constructor() {
+        this.loadingScene;
+        this.actualScene;
+    }
+    init(onCreateCallBack){
         this.loadingScene = new LoadingScene('LOADING'); // cena usada entre os carregamentos das cenas
-        this.loadingScene.setMinTransitionTime(0);
-        this.loadingScene.startLoadResources(this.scheduleChange);
-        this.actualScene = this.loadingScene;
+        this.actualScene=this.loadingScene;
+        this.loadingScene.startLoadingScene(onCreateCallBack);
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -39,17 +42,7 @@ class SceneManager {
     * @param {Scene} scene cena ser definida como atual */
     startScene = (scene) => {
         this.actualScene = this.loadingScene; // muda a cena para a tela de carregamento (intermediária)
-        scene.startLoadResources(this.scheduleChange); // Obrigatório para carregar todos os sprites
-    }
-
-    /** Altera a cena atual após um período de tempo 
-    * @param {Scene} scene cena ser definida como atual
-    * @param {Number} time tempo de espera até a mudança da cena */
-    scheduleChange = (scene,time) => {
-        setTimeout(() => {
-            this.actualScene = scene;
-            scene.onShow();
-        },time);
+        scene.startLoadResources(this.actualScene); // Obrigatório para carregar todos os sprites
     }
 }
 export default SceneManager;
