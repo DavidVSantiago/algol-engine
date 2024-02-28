@@ -37,7 +37,7 @@ class SceneManager {
 
     /** Dá início ao processo de inicialização da cena
     * @param {Scene} scene cena ser definida como atual */
-    startScene = (scene,old) => {
+    startScene = (scene) => {
         this.actualScene = this.loadingScene; // muda a cena para a tela de carregamento (intermediária)
         scene.startLoadResources(this.scheduleChange); // Obrigatório para carregar todos os sprites
     }

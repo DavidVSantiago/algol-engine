@@ -18,8 +18,8 @@ class SimpleScene extends Scene {
     //---------------------------------------------------------------------------------------------------------
 
     /** Dá início ao processo de carregamento da cena */
-    start(old){
-        this.sceneManager.startScene(this,old);
+    start(){
+        this.sceneManager.startScene(this);
     }
 
     /** Agenda o início do processo de carregamento da cena 

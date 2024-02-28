@@ -30,8 +30,8 @@ class SplashScreen extends SimpleScene{
         gamePlay.scheduleStart(1000,this);
     }
 
-    start(old){
-        super.start(old);
+    start(){
+        super.start();
         console.log("SPLASH start()");
     }
     //---------------------------------------------------------------------------------------------------------
