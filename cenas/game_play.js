@@ -37,8 +37,8 @@ class GamePlay extends SimpleScene{
         console.log("GAME onShow()");
     }
 
-    start(old){
-        super.start(old);
+    start(){
+        super.start();
         console.log("GAME start()");
     }
     //---------------------------------------------------------------------------------------------------------

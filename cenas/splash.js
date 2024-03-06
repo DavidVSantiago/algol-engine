@@ -1,21 +1,19 @@
-import {SimpleScene,SimpleSprite,AnimatedSprite, SceneManager} from '../engine/engine.js';
-import GamePlay from './game_play.js';
+import {SimpleScene,SimpleSprite,AnimatedSprite, SceneManager} from '../../engine.js';
+import SplashScene from '../engine/scenes/types/splash_scene.js';
 
-class SplashScreen extends SimpleScene{
+/** Abstract */
+class Splash extends SplashScene{
     constructor(){
         super('Splash');
-        // registra os ESTADOS
-        this.registerState(0);
-
-        // cria os sprites dessa cena
-        this.bg = new SimpleSprite('assets/imgs/splash.png');
-    
-        // coloca cada sprite nos batchs dos seus respectivos STATES
-        this.registerSprite(this.bg,0);
     }
 
     //---------------------------------------------------------------------------------------------------------
-    // MÉTODOS 
+    // MÉTODOS
+    //---------------------------------------------------------------------------------------------------------
+   
+
+    //---------------------------------------------------------------------------------------------------------
+    // MÉTODOS OVERRIDE
     //---------------------------------------------------------------------------------------------------------
 
     /** Invocado após todos os recursos serem totalmente carregados */
@@ -26,14 +24,16 @@ class SplashScreen extends SimpleScene{
     /** Invocado após a cena aparecer na tela */
     onShow(){ // overriding
         console.log("SPLASH onShow()");
-        let gamePlay = new GamePlay();
-        gamePlay.scheduleStart(1000,this);
     }
 
-    start(old){
-        super.start(old);
+    start(bg, nextScene, time){
+        this.bg=bg;
+        this.nextScene=nextScene;
+        this.time=time;
+        super.start();
         console.log("SPLASH start()");
     }
+    
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS DO GAMELOOP
     //---------------------------------------------------------------------------------------------------------
@@ -43,4 +43,4 @@ class SplashScreen extends SimpleScene{
        
     }
 }
-export default SplashScreen;
+export default SplashScene;

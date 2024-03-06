@@ -18,16 +18,8 @@ class SimpleScene extends Scene {
     //---------------------------------------------------------------------------------------------------------
 
     /** Dá início ao processo de carregamento da cena */
-    start(old){
-        this.sceneManager.startScene(this,old);
-    }
-
-    /** Agenda o início do processo de carregamento da cena 
-    * @param {Number} time tempo, em milissegundos, de espera até o início da cena */
-    scheduleStart=(time,old) => {
-        setTimeout(() => {
-            this.start(old);
-        },time);
+    start(){
+        this.sceneManager.startScene(this);
     }
     
     
@@ -35,4 +27,5 @@ class SimpleScene extends Scene {
     // MÉTODOS DO GAMELOOP
     //---------------------------------------------------------------------------------------------------------
 }
+
 export default SimpleScene;

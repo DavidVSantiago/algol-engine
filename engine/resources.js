@@ -26,6 +26,10 @@ class Resources {
         this.offCtx = this.offscreen.getContext("2d");
     }
 
+    loadAllImages(){
+
+    }
+
     /** limpa a tela */
     clearScreen() {
         this.offCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);

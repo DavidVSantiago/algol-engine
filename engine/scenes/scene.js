@@ -13,6 +13,7 @@ class Scene {
         this.name = name; // toda Scene possui um nome associado a ela
         this.spriteBatchList = []; // array de states da Cena
         this.actualBatch;
+        
         this.res = Resources.getInstance();
         this.promisesList = []; // lista de todas as promisse de recursos da cena
         this.minTransitionTime=1000; // tempo, em milissegundo, mínimo de duração da transição da cena
@@ -38,10 +39,11 @@ class Scene {
     onShow(){ } // abstract
 
     /** Inicializa todos os recursos assíncronos da cena, principalmente as imagens
-    * @param {callback} scheduleChangeCallBack função a ser invocada para iniciar esta cena, após os recursos serem carregados */
-    startLoadResources(scheduleChangeCallBack) {
-        // marca o tempo do início da transição da cena
-        let startTime = this.res.getTimeTick();
+    * @param {callback} onFinishLoadCallBack função a ser invocada para iniciar esta cena, após os recursos serem carregados */
+    async startLoadResources(onFinishLoadCallBack) {
+
+        this.onInit(); // começou a carregar a cena
+
         // Vincula o onload de todas as imagens à novas promisses
         for (let i = 0; i < this.spriteBatchList.length; i++) { // percorre todos os batchs
             let spritesList = this.spriteBatchList[i].spritesList;
@@ -55,8 +57,9 @@ class Scene {
                     );
             }
         }
+
         // quando todas as promisses forem resolvidas...
-        Promise.allSettled(this.promisesList).then(() => {
+        await Promise.allSettled(this.promisesList).then(() => {
             for (let i = 0; i < this.spriteBatchList.length; i++) { // percorre todos os batchs
                 let spritesList = this.spriteBatchList[i].spritesList;
                 for (let i = 0; i < spritesList.length; i++) { // percorre todos os sprites de cada batch
@@ -64,19 +67,10 @@ class Scene {
                     spritesList[i].loaded = true;
                 }
             }
-            this.onInit();
-            // marca o tempo de término da transição da cena
-            let endTime = this.res.getTimeTick();
-            // obtem o tempo restante até a limite do tempo de transição da cena
-            let leftTime = this.minTransitionTime - (endTime-startTime);
-            //correção para caso o tempo decorrido seja maior que o tempo limite da transição
-            if(leftTime<0)leftTime=0;
-            // agenda a mudança de cena com base no tempo restante
-            scheduleChangeCallBack(this, leftTime); // agenda a transição de tela para a nova cena
+            onFinishLoadCallBack(this); // informa o termino do carregamento da cena
         }).catch(error => {
             console.log(error); // rejectReason of any first rejected promise
         });;
-        this.promisesList=null;
     }
 
     /** Registra um novo Estado e o seu spriteBatch associado

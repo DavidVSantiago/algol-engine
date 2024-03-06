@@ -10,14 +10,14 @@ import Resources from './resources.js';
 
 /** Implementação da Game Engine do jogo
  * Classe abstrata que deve ser herdada para prover suas funcionalidades */
-class Engine{
+class Engine {
     /**
      * Construtor
      * @param {Number} width - largura da tela
      * @param {Number} height - altura da tela */
-    constructor(width,height){
+    constructor(width, height) {
         this.res = Resources.getInstance();
-        this.res.init(width,height); // inicializa os recursos da Engine
+        this.res.init(width, height); // inicializa os recursos da Engine
 
         // atributos da Engine
         this.sceneManager = SceneManager.getInstance();
@@ -33,28 +33,30 @@ class Engine{
     /* MÉTODOS DO GAMELOOP */
     /*****************************************************************************/
 
-    handleEvents(){
+    handleEvents() {
         //console.log('handleEvents - ENGINE');
         this.sceneManager.getActualScene().handleEvents();
     }
-    
-    update(){
+
+    update() {
         //console.log('update - ENGINE');
         this.sceneManager.getActualScene().update();
     }
 
-    render(){
+    render() {
         //console.log('render - ENGINE');
         this.sceneManager.getActualScene().render();
     }
 
-    gameloop=()=>{
+    gameloop = () => {
         let tempoAtual = this.res.getTimeTick();
-        this.res.deltaTime = (tempoAtual - this.tempoAnterior) ;//* (6e-2);
+        this.res.deltaTime = (tempoAtual - this.tempoAnterior);//* (6e-2);
 
-        this.handleEvents();
-        this.update();
-        this.render();
+            console.log("LOOP");
+            this.handleEvents();
+            this.update();
+            this.render();
+
 
         this.tempoAnterior = tempoAtual; // atualiza o tempo anterior (para o próximo quadro)
         requestAnimationFrame(this.gameloop);
@@ -63,7 +65,7 @@ class Engine{
     /*****************************************************************************/
     /* MONITORAMENTO DAS TECLAS DO TECLADO */
     /*****************************************************************************/
-    keyPressed=(e)=>{
+    keyPressed = (e) => {
         switch (e.keyCode) {
             case 37: this.res.vk_left = true; break; // Left key
             case 38: this.res.vk_up = true; break; // Up key
@@ -75,7 +77,7 @@ class Engine{
             case 68: this.res.vk_d = true; break; // d
         }
     }
-    keyReleased=(e)=>{
+    keyReleased = (e) => {
         switch (e.keyCode) {
             case 37: this.res.vk_left = false; break; // Left key
             case 38: this.res.vk_up = false; break; // Up key
@@ -89,4 +91,4 @@ class Engine{
     }
 }
 
-export {Engine,SimpleSprite,AnimatedSprite,SpriteBatch,SimpleScene,SceneManager};
+export { Engine, SimpleSprite, AnimatedSprite, SpriteBatch, SimpleScene, SceneManager };
