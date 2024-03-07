@@ -21,12 +21,11 @@ class Engine {
 
         // atributos da Engine
         this.sceneManager = SceneManager.getInstance();
+        this.sceneManager.init(this.gameloop); // obrigatório para inicializar os recursos 
 
         // registra os eventos de pressionamento e soltura das teclas
         window.addEventListener('keydown', this.keyPressed, false);
         window.addEventListener('keyup', this.keyReleased, false);
-
-        requestAnimationFrame(this.gameloop);
     }
 
     /*****************************************************************************/

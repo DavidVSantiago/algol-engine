@@ -9,7 +9,7 @@ import Scene from '../scene.js';
 class LoadingScene extends Scene{
     /** construtor
     * @param {String} name nome único da cena */
-    constructor(name, gameLoopCallBack){
+    constructor(name){
         super(name); // OBRIGATÓRIO
 
         let resources = Resources.getInstance();

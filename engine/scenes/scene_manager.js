@@ -6,13 +6,7 @@ import LoadingScene from "./types/loading_scene.js";
  * Classe usada pela maioria das outras classes da engine */
 class SceneManager {
     static singleton;
-    constructor() {
-        this.isTrasition=false;
-        this.loadingScene = new LoadingScene('LOADING'); // cena usada entre os carregamentos das cenas
-        //this.loadingScene.setMinTransitionTime(0);
-        this.loadingScene.startLoadResources(this.scheduleChange);
-        this.actualScene=this.loadingScene;
-    }
+    constructor() {}
 
     //---------------------------------------------------------------------------------------------------------
     // GETTERS & SETTERS
@@ -36,19 +30,25 @@ class SceneManager {
     // MÉTODOS
     //---------------------------------------------------------------------------------------------------------
 
+    /** Inicializa os recursos do SceneManager */
+    init(gameLoopCallBack){
+        this.loadingScene = new LoadingScene('LOADING'); // cena usada entre os carregamentos das cenas
+        this.loadingScene.startLoadResources((scene)=>{
+            requestAnimationFrame(gameLoopCallBack);
+        });
+    }
+
     /** Dá início ao processo de inicialização da cena
     * @param {Scene} scene cena ser definida como atual */
     startScene = (scene) => {
-        this.isTrasition=true;
         scene.startLoadResources(this.onFinishLoad); // Obrigatório para carregar todos os sprites
     }
 
-    /** Altera a cena atual após um período de tempo 
+    /** 
     * @param {Scene} scene cena ser definida como atual */
     onFinishLoad = (scene) => {
         this.actualScene = scene;
         scene.onShow();
-        this.isTrasition=false;
     }
 }
 

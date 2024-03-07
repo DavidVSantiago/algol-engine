@@ -43,7 +43,7 @@ class Scene {
     async startLoadResources(onFinishLoadCallBack) {
 
         this.onInit(); // começou a carregar a cena
-
+        
         // Vincula o onload de todas as imagens à novas promisses
         for (let i = 0; i < this.spriteBatchList.length; i++) { // percorre todos os batchs
             let spritesList = this.spriteBatchList[i].spritesList;

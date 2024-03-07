@@ -4,12 +4,22 @@ import {SimpleScene,SimpleSprite} from '../../engine.js';
 class SplashScene extends SimpleScene{
     constructor(name){
         super(name);
+        this.bg;
+        this.nextScene;
+        this.time=0;
     }
 
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS
     //---------------------------------------------------------------------------------------------------------
    
+    setTime(time){ this.time=time; }
+
+    setImage(fileSource){
+        this.bg = new SimpleSprite(fileSource);
+        this.registerState(0);
+        this.registerSprite(this.bg,0);
+    }
 
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS OVERRIDE

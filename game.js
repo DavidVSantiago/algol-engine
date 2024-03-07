@@ -1,7 +1,7 @@
 "use strict";
 
 import SplashScene from './engine/scenes/types/splash_scene.js';
-import {Engine, SceneManager} from './engine/engine.js';
+import {Engine, SceneManager, SimpleSprite} from './engine/engine.js';
 import GamePlay from './cenas/game_play.js';
 
 window.addEventListener('load',()=>{
@@ -14,10 +14,8 @@ class Game extends Engine{
 
         // cria e configura a cena
         let splashScene = new SplashScene();
-        splashScene.time=time;
-        splashScene.bg = new SimpleSprite('assets/imgs/splash.png');
-        splashScene.registerState(0);
-        splashScene.registerSprite(this.bg,0);
+        splashScene.setTime(100);
+        splashScene.setImage('assets/imgs/splash.png');
 
         // inicializa a cena
         this.sceneManager.startScene(splashScene);
