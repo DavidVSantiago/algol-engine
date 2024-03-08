@@ -27,10 +27,10 @@ class GamePlay extends SimpleScene{
     //---------------------------------------------------------------------------------------------------------
 
     /** Invocado após todos os recursos serem totalmente carregados */
-    onInit() { // overriding
+    onFinishLoad() { // overriding
         this.b2.posX=150;
         this.b2.posY=200;
-        console.log("GAME onInit()");
+        console.log("GAME onFinishLoad()");
     } 
     /** Invocado após a cena aparecer na tela */
     onShow(){ // overriding

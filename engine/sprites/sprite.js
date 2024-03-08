@@ -53,7 +53,7 @@ class Sprite{
      * @param {CanvasRenderingContext2D} ctx contexto de renderização */
     render(ctx){
         if(this.loaded)// apenas renderiza se o Sprite estiver carregado (evita falhas de exibição)
-            ctx.drawImage(this.getFrame(this.res.deltaTime),Math.floor(this.posX),Math.floor(this.posY));
+            ctx.drawImage(this.getFrame(),Math.floor(this.posX),Math.floor(this.posY));
     }
 
 }

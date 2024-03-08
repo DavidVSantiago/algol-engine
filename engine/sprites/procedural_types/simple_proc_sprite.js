@@ -11,6 +11,7 @@ class SimpleProcSprite extends Sprite {
     constructor(offCanvas) {
         super();
         this.offCanvas = offCanvas;
+        this.ctx=this.offCanvas.getContext('2d');
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -34,7 +35,13 @@ class SimpleProcSprite extends Sprite {
         this.loaded=true;
     }
 
-
+    /** Define a transparencia do sprite procedural */
+    setAlpha(alphaValue){
+        this.ctx.clearRect(0, 0, this.offCanvas.width, this.offCanvas.height);
+        this.ctx.fillStyle = "black";
+        this.ctx.globalAlpha = alphaValue;
+        this.ctx.fillRect(0, 0, this.offCanvas.width, this.offCanvas.height);
+    }
 }
 
 export default SimpleProcSprite;

@@ -14,16 +14,16 @@ class Game extends Engine{
 
         // cria e configura os splashes
         let sp1 = new SplashScene('SP1');
-        sp1.setTime(1000);
+        sp1.setTime(3000);
         sp1.setImage('assets/imgs/splash.png');
         let sp2 = new SplashScene('SP2');
-        sp2.setTime(1000);
+        sp2.setTime(3000);
         sp2.setImage('assets/imgs/splash2.png');
         let sp3 = new SplashScene('SP3');
-        sp3.setTime(1000);
+        sp3.setTime(3000);
         sp3.setImage('assets/imgs/splash3.png');
         let sp4 = new SplashScene('SP4');
-        sp4.setTime(1000);
+        sp4.setTime(3000);
         sp4.setImage('assets/imgs/splash4.png');
 
         // organiza a lista de splashes

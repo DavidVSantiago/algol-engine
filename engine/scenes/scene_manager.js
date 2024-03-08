@@ -46,7 +46,6 @@ class SceneManager {
         this.loadingScene.startLoadResources(
             (scene)=>{ // callback para o pós carregamento dos recursos da cena de loading
                 this.actualScene = this.loadingScene;
-                scene.onShow();
                 requestAnimationFrame(gameLoopCallBack); // pode iniciar o gameloop
             }
         );
@@ -58,7 +57,6 @@ class SceneManager {
         scene.startLoadResources(
             (scene) => { // callback para o pós carregamento dos recursos da cena
                 this.actualScene = scene;
-                this.actualScene.onShow();
             }
         );
     }
@@ -81,12 +79,11 @@ class SceneManager {
             this.postSplashScene.startLoadResources( // carrega os recursos da cena pós splash 
                 (scene) => { // após carregados os recursos da cena pós splash
                     console.log("todas as cenas carregadas");
-                    this.actualScene = splashList[0];
-                    this.actualScene.onShow();
                     this.splashList=splashList;
+                    this.actualScene = this.splashList[0];
                 }
             );
-        })
+        });
     }
 
     /*****************************************************************************/
@@ -98,22 +95,23 @@ class SceneManager {
     }
 
     update() {
-        // TODO criar mecanismo de temporização para mudar os splashes
+        // mecanismo de temporização para mudar os splashes
         if(this.splashList!=null){
-            console.log("AccTime: "+this.accTime);
             this.accTime += Resources.getInstance().deltaTime;
-            if(this.accTime>=this.splashList[this.splashIndex].time){
+            if(this.accTime>=this.splashList[this.splashIndex].durationTime){
                 this.splashIndex++;
                 this.accTime=0;
                 if(this.splashIndex==this.splashList.length){
                     this.splashIndex--;
                     this.actualScene=this.postSplashScene;
+                    this.actualScene.onShow();
                     this.splashList=null;
                     this.actualScene.update();
                     return;
                 }
             }
             this.actualScene=this.splashList[this.splashIndex];
+            this.actualScene.onShow();
         }
         this.actualScene.update();
     }

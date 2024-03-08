@@ -32,16 +32,18 @@ class Scene {
     // MÉTODOS 
     //---------------------------------------------------------------------------------------------------------
 
-    /** Invocado após todos os recursos serem totalmente carregados */
-    onInit() { } // abstract
-    /** Invocado após a cena aparecer na tela */
+    /** Invocado quando os recursos da cena começam a ser carregados */
+    onInitLoad() { } // abstract
+    /** Invocado após os recursos da cena serem todos carregados */
+    onFinishLoad(){ } // abstract
+    /** Invocado quando a cena começa a ser exibida na tela */
     onShow(){ } // abstract
 
     /** Inicializa todos os recursos assíncronos da cena, principalmente as imagens
     * @param {callback} onFinishLoadCallBack função a ser invocada para iniciar esta cena, após os recursos serem carregados */
-    async startLoadResources(onFinishLoadCallBack) {
+     startLoadResources(onFinishLoadCallBack) {
 
-        this.onInit(); // começou a carregar a cena
+        this.onInitLoad(); // começou a carregar a cena
         
         // Vincula o onload de todas as imagens à novas promisses
         for (let i = 0; i < this.spriteBatchList.length; i++) { // percorre todos os batchs
@@ -58,7 +60,7 @@ class Scene {
         }
 
         // quando todas as promisses forem resolvidas...
-        await Promise.allSettled(this.promisesList).then(() => {
+         Promise.allSettled(this.promisesList).then(() => {
             for (let i = 0; i < this.spriteBatchList.length; i++) { // percorre todos os batchs
                 let spritesList = this.spriteBatchList[i].spritesList;
                 for (let i = 0; i < spritesList.length; i++) { // percorre todos os sprites de cada batch
@@ -66,6 +68,7 @@ class Scene {
                     spritesList[i].loaded = true;
                 }
             }
+            this.onFinishLoad(); // terminou de carregar a cena
             onFinishLoadCallBack(this); // informa o termino do carregamento da cena
         }).catch(error => {
             console.log(error); // rejectReason of any first rejected promise

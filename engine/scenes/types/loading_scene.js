@@ -34,14 +34,17 @@ class LoadingScene extends Scene{
     // MÉTODOS 
     //---------------------------------------------------------------------------------------------------------
 
-    /** Invocado após todos os recursos serem totalmente carregados */
-    onInit() { // overriding
+
+    onInitLoad() { // overriding
         let resources = Resources.getInstance();
         this.loading.posX=(resources.canvas.width/2)-(this.loading.img.width/2);
         this.loading.posY=(resources.canvas.height/2)-(this.loading.img.height/2);
-        console.log("LOADING onInit()");
+        console.log("LOADING onInitLoad()");
     }
-    /** Invocado após a cena aparecer na tela */
+
+    onFinishLoad(){ // overriding
+        console.log("LOADING onFinishLoad()");
+    }
     onShow(){ // overriding
         console.log("LOADING onShow()");
     }
