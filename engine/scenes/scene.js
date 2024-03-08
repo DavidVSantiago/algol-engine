@@ -13,7 +13,6 @@ class Scene {
         this.name = name; // toda Scene possui um nome associado a ela
         this.spriteBatchList = []; // array de states da Cena
         this.actualBatch;
-        
         this.res = Resources.getInstance();
         this.promisesList = []; // lista de todas as promisse de recursos da cena
         this.minTransitionTime=1000; // tempo, em milissegundo, mínimo de duração da transição da cena

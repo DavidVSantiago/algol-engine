@@ -5,6 +5,9 @@
 class Resources {
     static singleton;
 
+    constructor(){
+        this.deltaTime=0.0;
+    }
     static getInstance() {
 
         if (!this.singleton) {
@@ -16,7 +19,6 @@ class Resources {
     /** Inicializa os recursos do Singleton - uso privado interno */
     init(width, height) {
         this.vk_up = false, this.vk_down = false, this.vk_left = false, this.vk_right = false, this.vk_esc = false;
-        this.deltatime;
         this.canvas = document.createElement('canvas');
         this.canvas.width = width;
         this.canvas.height = height;

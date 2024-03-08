@@ -16,6 +16,8 @@ class Engine {
      * @param {Number} width - largura da tela
      * @param {Number} height - altura da tela */
     constructor(width, height) {
+        this.tempoAnterior=0.0;
+
         this.res = Resources.getInstance();
         this.res.init(width, height); // inicializa os recursos da Engine
 
@@ -34,24 +36,24 @@ class Engine {
 
     handleEvents() {
         //console.log('handleEvents - ENGINE');
-        this.sceneManager.getActualScene().handleEvents();
+        this.sceneManager.handleEvents();
     }
 
     update() {
         //console.log('update - ENGINE');
-        this.sceneManager.getActualScene().update();
+        this.sceneManager.update();
     }
 
     render() {
         //console.log('render - ENGINE');
-        this.sceneManager.getActualScene().render();
+        this.sceneManager.render();
     }
 
     gameloop = () => {
         let tempoAtual = this.res.getTimeTick();
         this.res.deltaTime = (tempoAtual - this.tempoAnterior);//* (6e-2);
 
-            console.log("LOOP");
+            //console.log("LOOP");
             this.handleEvents();
             this.update();
             this.render();

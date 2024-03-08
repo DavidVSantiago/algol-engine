@@ -4,21 +4,19 @@ import {SimpleScene,SimpleSprite} from '../../engine.js';
 class SplashScene extends SimpleScene{
     constructor(name){
         super(name);
-        this.bg;
-        this.nextScene;
-        this.time=0;
+        this.time=1000; // tempo de duração da tela de splash
     }
 
     //---------------------------------------------------------------------------------------------------------
-    // MÉTODOS
+    // GETTERS & SETTERS
     //---------------------------------------------------------------------------------------------------------
-   
+
     setTime(time){ this.time=time; }
 
     setImage(fileSource){
-        this.bg = new SimpleSprite(fileSource);
+        let bg = new SimpleSprite(fileSource);
         this.registerState(0);
-        this.registerSprite(this.bg,0);
+        this.registerSprite(bg,0);
     }
 
     //---------------------------------------------------------------------------------------------------------
