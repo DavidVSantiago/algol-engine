@@ -1,16 +1,17 @@
-import {SimpleScene,SimpleSprite} from '../../engine.js';
-import Resources from '../../resources.js';
-import SimpleProcSprite from '../../sprites/procedural_types/simple_proc_sprite.js';
+import {SimpleScene,SimpleSprite} from '../../../engine.js';
+import Resources from '../../../resources.js';
+import SimpleProcSprite from '../../../sprites/procedural_types/simple_proc_sprite.js';
+import SplashPiece from './splash_piece.js';
 
 /** Abstract */
 class SplashScene extends SimpleScene{
     constructor(name){
         super(name);
-        this.durationTime=0; // tempo de duração da tela de splash
-        this.elapsedTime=0; // tempo decorrido da cena
-        this.transitionDurationTime=500;
-        this.blackScreen;
-        this.blackScreenCtx;
+
+        // array de imagens de splash com seus respectivos tempos de duração
+        this.splashPieceList = [];
+        // cena a ser exibida ao final da execução do splash
+        this.postScene=null;
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ class SplashScene extends SimpleScene{
         // sprite de fundo da tela de splash
         let bg = new SimpleSprite(fileSource);
         
-        // cria um registra o sprite do fundo preto da transição
+        // cria um registra o sprite do fundo preto para as transições
         this.blackScreen = new OffscreenCanvas(this.res.canvas.width,this.res.canvas.height);
         this.blackScreenCtx = this.blackScreen.getContext('2d');
         this.blackScreenCtx.fillStyle = "black";
@@ -43,8 +44,8 @@ class SplashScene extends SimpleScene{
     //---------------------------------------------------------------------------------------------------------
 
     /** Invocado após todos os recursos serem totalmente carregados */
-    onInitLoad() { // overriding
-        console.log("SPLASH onInitLoad()");
+    onStartLoad() { // overriding
+        console.log("SPLASH onStartLoad()");
     }
     
     /** Invocado após a cena aparecer na tela */
@@ -56,14 +57,23 @@ class SplashScene extends SimpleScene{
         console.log("SPLASH onShow()");
     }
 
-    start(bg, nextScene, durationTime){
-        this.bg=bg;
-        this.nextScene=nextScene;
-        this.durationTime=durationTime;
-        console.log("SPLASH start()");
-        super.start();
-    }
+    //---------------------------------------------------------------------------------------------------------
+    // MÉTODOS
+    //---------------------------------------------------------------------------------------------------------
     
+    addSplash(fileSource,durationTime){
+        // cria um novo sprite com a imagem recebida
+        let sprite = new SimpleSprite(fileSource);
+        // cria um novo splashpiece com o sprite e o seu tempo associado
+        let splashPiece = new SplashPiece(sprite,durationTime);
+        // adiciona o novo splashpiece na lista
+        this.splashPieceList.push(splashPiece);
+    }
+
+    addPostScene(postScene){
+        this.postScene = postScene;
+    }
+
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS DO GAMELOOP
     //---------------------------------------------------------------------------------------------------------

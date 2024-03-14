@@ -1,6 +1,6 @@
 "use strict";
 
-import SpriteBatch from '../sprites/sprite_batch.js';
+import SceneLayer from './scene_layer.js';
 import Resources from '../resources.js';
 import { SceneManager, SimpleSprite } from '../engine.js';
 
@@ -11,11 +11,23 @@ class Scene {
     * @param {String} name nome único da cena */
     constructor(name) {
         this.name = name; // toda Scene possui um nome associado a ela
-        this.spriteBatchList = []; // array de states da Cena
-        this.actualBatch;
-        this.res = Resources.getInstance();
+        this.res = Resources.getInstance(); // ref. para o singleton de recursos
+        
+        // array de layers da cena (max 10) a ultima é reservada para o black da trasição
+        this.layersList = [];
+        for(let i=0;i<10;i++){
+            this.layersList.push(new SceneLayer());
+        }
+
+        this.elapsedTime=0; // tempo decorrido da cena
         this.promisesList = []; // lista de todas as promisse de recursos da cena
+
+        // atributos da transição da tela
+        this.transitionDurationTime=500;
         this.minTransitionTime=1000; // tempo, em milissegundo, mínimo de duração da transição da cena
+        this.blackScreen;
+        this.blackScreenCtx;
+        
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -33,7 +45,7 @@ class Scene {
     //---------------------------------------------------------------------------------------------------------
 
     /** Invocado quando os recursos da cena começam a ser carregados */
-    onInitLoad() { } // abstract
+    onStartLoad() { } // abstract
     /** Invocado após os recursos da cena serem todos carregados */
     onFinishLoad(){ } // abstract
     /** Invocado quando a cena começa a ser exibida na tela */
@@ -43,11 +55,11 @@ class Scene {
     * @param {callback} onFinishLoadCallBack função a ser invocada para iniciar esta cena, após os recursos serem carregados */
      startLoadResources(onFinishLoadCallBack) {
 
-        this.onInitLoad(); // começou a carregar a cena
+        this.onStartLoad(); // começou a carregar a cena
         
         // Vincula o onload de todas as imagens à novas promisses
-        for (let i = 0; i < this.spriteBatchList.length; i++) { // percorre todos os batchs
-            let spritesList = this.spriteBatchList[i].spritesList;
+        for (let i = 0; i < this.layersList.length; i++) { // percorre todos os layers
+            let spritesList = this.layersList[i].spritesList;
             for (let i = 0; i < spritesList.length; i++) { // percorre todos os sprites de cada batch
                 if (spritesList[i] instanceof SimpleSprite)
                     this.promisesList.push( // adiciona uma nova promisse na lista, cada uma associada a uma imagem
@@ -61,8 +73,8 @@ class Scene {
 
         // quando todas as promisses forem resolvidas...
          Promise.allSettled(this.promisesList).then(() => {
-            for (let i = 0; i < this.spriteBatchList.length; i++) { // percorre todos os batchs
-                let spritesList = this.spriteBatchList[i].spritesList;
+            for (let i = 0; i < this.layersList.length; i++) { // percorre todos os batchs
+                let spritesList = this.layersList[i].spritesList;
                 for (let i = 0; i < spritesList.length; i++) { // percorre todos os sprites de cada batch
                     spritesList[i].init(); // inicia cada uma das imagens
                     spritesList[i].loaded = true;
@@ -75,25 +87,10 @@ class Scene {
         });;
     }
 
-    /** Registra um novo Estado e o seu spriteBatch associado
-    * @param {Number} stateIndex índice do estado */
-    registerState(stateIndex) {
-        this.spriteBatchList.push(new SpriteBatch(stateIndex));
-        if (this.spriteBatchList.length == 1) this.changeState(stateIndex); // se for o primeiro Estado registrado, o configura como atual
-    }
-
-    /** Altera o State atual
-    * @param {Number} stateIndex índice do estado */
-    changeState(stateIndex) {
-        if (stateIndex >= this.spriteBatchList.length)
-            throw new Error("O registro dos STATES deve obedecer a ordem dos seus índices!");
-        this.actualBatch = this.spriteBatchList[stateIndex];
-    }
-
     /** Registra um Sprite em um Batch associado a um estado
-    * @param {Number} stateIndex índice do estado do Batch */
-    registerSprite(sprite, stateIndex) {
-        this.spriteBatchList[stateIndex].putSprite(sprite);
+    * @param {Number} layerIndex índice do layer onde será inserido o sprite*/
+    registerSprite(sprite, layerIndex) {
+        this.layersList[layerIndex].putSprite(sprite);
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -105,8 +102,15 @@ class Scene {
     update() { } // abstract
 
     render() {
-        // renderiza o srpitebatch do stado atual
-        this.actualBatch.render();
+        // limpa a tela da renderização do quadro anterior
+        this.res.clearScreen();
+
+        // percorre todas os layers da cena e renderiza cada um deles
+        for(let i=0;i<this.layersList.length;i++){
+            this.layersList[i].render(this.res.offCtx);
+        }
+        // renderiza o imageBuffer na tela do jogo
+        this.res.ctx.drawImage(this.res.offscreen,0,0);
     }
 }
 

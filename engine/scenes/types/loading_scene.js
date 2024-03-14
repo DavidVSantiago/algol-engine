@@ -15,8 +15,7 @@ class LoadingScene extends Scene{
         let resources = Resources.getInstance();
 
         // Geração dos sprites da tela de loading
-        this.registerState(0);
-        this.loading = new SimpleSprite('assets/imgs/loading.png');
+        this.loadingImage = new SimpleSprite('assets/imgs/loading.png');
         
         // cria um sprite procedural para representar um fundo preto
         let blackScreen = new OffscreenCanvas(resources.canvas.width,resources.canvas.height);
@@ -26,8 +25,8 @@ class LoadingScene extends Scene{
         this.black = new SimpleProcSprite(blackScreen);
         
         // registra os sprites na cena
-        this.registerSprite(this.black,0);
-        this.registerSprite(this.loading,0);
+        this.registerSprite(this.black,9);
+        this.registerSprite(this.loadingImage,0);
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -35,15 +34,15 @@ class LoadingScene extends Scene{
     //---------------------------------------------------------------------------------------------------------
 
 
-    onInitLoad() { // overriding
-        let resources = Resources.getInstance();
-        this.loading.posX=(resources.canvas.width/2)-(this.loading.img.width/2);
-        this.loading.posY=(resources.canvas.height/2)-(this.loading.img.height/2);
-        console.log("LOADING onInitLoad()");
+    onStartLoad() { // overriding
+        console.log("LOADING onStartLoad()");
     }
-
+    
     onFinishLoad(){ // overriding
         console.log("LOADING onFinishLoad()");
+        let resources = Resources.getInstance();
+        this.loadingImage.posX=(resources.canvas.width/2)-(this.loadingImage.img.width/2);
+        this.loadingImage.posY=(resources.canvas.height/2)-(this.loadingImage.img.height/2);
     }
     onShow(){ // overriding
         console.log("LOADING onShow()");

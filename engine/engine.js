@@ -2,7 +2,7 @@
 
 import SimpleSprite from './sprites/types/simple_sprite.js';
 import AnimatedSprite from './sprites/types/animated_sprite.js';
-import SpriteBatch from './sprites/sprite_batch.js';
+import SceneLayer from './scenes/scene_layer.js';
 import SimpleScene from './scenes/types/simple_scene.js';
 import SceneManager from './scenes/scene_manager.js';
 import Resources from './resources.js';
@@ -92,4 +92,4 @@ class Engine {
     }
 }
 
-export { Engine, SimpleSprite, AnimatedSprite, SpriteBatch, SimpleScene, SceneManager };
+export { Engine, SimpleSprite, AnimatedSprite, SceneLayer as SpriteBatch, SimpleScene, SceneManager };

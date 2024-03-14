@@ -6,10 +6,17 @@ import LoadingScene from "./types/loading_scene.js";
 /** SINGLETON que gerencia o caregamento e transição entre as cenas do jogo
  * Classe usada pela maioria das outras classes da engine */
 class SceneManager {
+    
+    static TYPE_SPLASH=0;
+    static TYPE_SCENE=1;
+    
+
     static singleton;
     constructor() {
-        
+        this.loadingScene=null;
+
         // dados do gerenciamento do splash
+        // TODO remover alguns destes
         this.splashList=null;
         this.splashIndex=0;
         this.postSplashScene=null;
@@ -95,7 +102,9 @@ class SceneManager {
     }
 
     update() {
+
         // mecanismo de temporização para mudar os splashes
+        // isso vai sair daqui. vai para dentro do update do splashscene
         if(this.splashList!=null){
             this.accTime += Resources.getInstance().deltaTime;
             if(this.accTime>=this.splashList[this.splashIndex].durationTime){
