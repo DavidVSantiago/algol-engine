@@ -49,7 +49,7 @@ class SimpleScene extends Scene {
         }
 
         // quando todas as promisses forem resolvidas...
-         Promise.allSettled(this.promisesList).then(() => {
+         Promise.all(this.promisesList).then(() => {
             for (let i = 0; i < this.sceneLayersList.length; i++) { // percorre todos os batchs
                 let spritesList = this.sceneLayersList[i].spritesList;
                 for (let i = 0; i < spritesList.length; i++) { // percorre todos os sprites de cada batch

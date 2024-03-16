@@ -1,6 +1,6 @@
 "use strict";
 
-import {SimpleScene,SimpleSprite} from '../../engine.js';
+import {SceneManager, SimpleScene,SimpleSprite} from '../../engine.js';
 
 /** Abstract */
 class SplashScene extends SimpleScene{
@@ -52,6 +52,18 @@ class SplashScene extends SimpleScene{
         this.postScene = postScene;
     }
 
+    /** Inicializa todos os recursos assíncronos da cena, principalmente as imagens
+    * @param {callback} onFinishLoadCallBack função a ser invocada para iniciar esta cena, após os recursos serem carregados */
+    startLoadResources(onFinishLoadCallBack) {
+
+        super.startLoadResources((scene)=>{ // invoca a versão pai para iniciar o carregamento das imagens dos splashes
+
+            this.postScene.startLoadResources((scene)=>{// inicia o carregamento do postScene
+                onFinishLoadCallBack(this); // apos carregar os splashes e o postscene, retorna o callback principal
+            })
+        });
+    }
+
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS DO GAMELOOP
     //---------------------------------------------------------------------------------------------------------
@@ -67,11 +79,23 @@ class SplashScene extends SimpleScene{
         if(this.elapsedTime<=this.transitionDurationTime){ // inicio da transição
             let alphaValue = 1.0 - this.elapsedTime/this.transitionDurationTime;
             this.black.setAlpha(alphaValue);
-        }else if(this.elapsedTime>=this.durationTime-this.transitionDurationTime){ // final da transição
-            let diffEndTime = this.durationTime-this.elapsedTime;
+        }else if(this.elapsedTime>=this.splashImgTimeList[this.splashImgIndex]-this.transitionDurationTime){ // final da transição
+            let diffEndTime = this.splashImgTimeList[this.splashImgIndex]-this.elapsedTime;
             let alphaValue = 1.0 - diffEndTime/this.transitionDurationTime;
             this.black.setAlpha(alphaValue);
         }
+
+        // checa se o tempo splash atual chegou ao fim
+        if(this.elapsedTime>=this.splashImgTimeList[this.splashImgIndex]){
+            this.splashImgIndex++; // muda para o próximo splash
+            this.elapsedTime=0; // reinicia o contador de tempo da cena
+            
+            // checa se já se passaram todos os splashs
+            if(this.splashImgIndex>=this.splashImgCount){
+                
+            }
+        }
+
         //console.log(this.elapsedTime);
     }
 
@@ -81,7 +105,7 @@ class SplashScene extends SimpleScene{
 
         // renderiza o splashscene atual
         this.sceneLayersList[0].getSprite(this.splashImgIndex).render(this.res.offCtx);
-        
+
         // renderiza o fundo preto da transição
         this.black.render(this.res.offCtx);
 
