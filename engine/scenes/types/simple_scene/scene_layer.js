@@ -1,6 +1,6 @@
 "use strict";
 
-import Resources from '../resources.js';
+import Resources from '../../../resources.js';
 
 class SceneLayer{
     constructor(){
@@ -14,6 +14,9 @@ class SceneLayer{
 
     putSprite(sprite){
         this.spritesList.push(sprite);
+    }
+    getSprite(spriteIndex){
+        return this.spritesList[spriteIndex];
     }
 
     //---------------------------------------------------------------------------------------------------------

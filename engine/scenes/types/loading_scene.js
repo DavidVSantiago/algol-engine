@@ -2,7 +2,6 @@
 
 import { SimpleSprite } from '../../engine.js';
 import Resources from '../../resources.js';
-import SimpleProcSprite from '../../sprites/procedural_types/simple_proc_sprite.js';
 import Scene from '../scene.js';
 
 /** Implementação de uma cena de carregamento de tela */
@@ -65,6 +64,7 @@ class LoadingScene extends Scene{
 
         // renderiza todos os sprites da cena no buffer
         this.black.render(this.res.offCtx);
+        this.loadingImage.render(this.res.offCtx);
 
         // renderiza o imageBuffer na tela do jogo
         this.res.ctx.drawImage(this.res.offscreen,0,0);

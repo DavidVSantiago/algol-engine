@@ -12,17 +12,13 @@ class Scene {
         this.name = name; // toda Scene possui um nome associado a ela
         this.res = Resources.getInstance(); // ref. para o singleton de recursos
 
-        this.elapsedTime=0; // tempo decorrido da cena
         this.promisesList = []; // lista de todas as promisse de recursos da cena
-
-        // atributos da transição da tela
-        this.transitionDurationTime=500;
-        this.minTransitionTime=1000; // tempo, em milissegundo, mínimo de duração da transição da cena
         
         // cria um sprite procedural para representar um fundo preto (comum a várias cenas)
         this.blackScreen = new OffscreenCanvas(this.res.canvas.width, this.res.canvas.height);
         this.blackScreenCtx = this.blackScreen.getContext('2d');
         this.blackScreenCtx.fillStyle = "black";
+        this.blackScreenCtx.globalAlpha = 1; // a princípio transparente
         this.blackScreenCtx.fillRect(0, 0, this.blackScreen.width, this.blackScreen.height);
         this.black = new SimpleProcSprite(this.blackScreen);  
     }

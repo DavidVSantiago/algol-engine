@@ -1,9 +1,8 @@
 "use strict";
 
-import { SimpleSprite } from '../../engine.js';
-import Scene from '../scene.js';
-import SceneLayer from '../scene_layer.js';
-import SceneManager from '../scene_manager.js';
+import { SimpleSprite } from '../../../engine.js';
+import Scene from '../../scene.js';
+import SceneLayer from './scene_layer.js';
 
 /** Implementação de uma cena simples e vazia
  * Classe abstrata. Deve ser herdada para fornecer as funcionalidades básicas de uma cena */
@@ -12,8 +11,13 @@ class SimpleScene extends Scene {
     * @param {String} name nome único da cena */
     constructor(name) {
         super(name);
+        
+        // atributos da transição da tela
+        this.elapsedTime=0; // tempo decorrido da cena
+        this.transitionDurationTime=500;
+        this.minTransitionTime=1000; // tempo, em milissegundo, mínimo de duração da transição da cena
 
-        // array de layers da cena (max 10) a ultima é reservada para o black da trasição
+        // array de layers da cena (max 10)
         this.sceneLayersList = [];
         for(let i=0;i<10;i++){
             this.sceneLayersList.push(new SceneLayer());
@@ -76,6 +80,9 @@ class SimpleScene extends Scene {
         for(let i=0;i<this.sceneLayersList.length;i++){
             this.sceneLayersList[i].render(this.res.offCtx);
         }
+        // renderiza o fundo preto da transição
+        this.black.render(this.res.offCtx);
+
         // renderiza o imageBuffer na tela do jogo
         this.res.ctx.drawImage(this.res.offscreen,0,0);
     }

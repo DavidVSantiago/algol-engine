@@ -1,44 +1,20 @@
-import {SimpleScene,SimpleSprite} from '../../../engine.js';
-import Resources from '../../../resources.js';
-import SimpleProcSprite from '../../../sprites/procedural_types/simple_proc_sprite.js';
-import SplashPiece from './splash_piece.js';
+"use strict";
+
+import {SimpleScene,SimpleSprite} from '../../engine.js';
 
 /** Abstract */
 class SplashScene extends SimpleScene{
     constructor(name){
         super(name);
+        this.splashImgCount=0; // quantidade de imagens de splash
+        this.splashImgIndex=0; // quantidade de imagens de splash
+        this.splashImgTimeList=[]; // array de tempos de cada iésimo splashImage
+        this.postScene=null; // cena a ser exibida ao final da exibição das imagens de splash
 
-        // array de imagens de splash com seus respectivos tempos de duração
-        this.splashPieceList = [];
-        // cena a ser exibida ao final da execução do splash
-        this.postScene=null;
+        // registra o sprite do fundo preto para as transições
+        this.registerSprite(this.black,9); // o layer 9 é obrigatório, para ficar na frente de todos
     }
-
-    //---------------------------------------------------------------------------------------------------------
-    // GETTERS & SETTERS
-    //---------------------------------------------------------------------------------------------------------
-
-    setTime(durationTime){ this.durationTime=durationTime; }
-
-    setImage(fileSource){
-        
-        // sprite de fundo da tela de splash
-        let bg = new SimpleSprite(fileSource);
-        
-        // cria um registra o sprite do fundo preto para as transições
-        this.blackScreen = new OffscreenCanvas(this.res.canvas.width,this.res.canvas.height);
-        this.blackScreenCtx = this.blackScreen.getContext('2d');
-        this.blackScreenCtx.fillStyle = "black";
-        this.blackScreenCtx.globalAlpha = 1;
-        this.blackScreenCtx.fillRect(0, 0, this.blackScreen.width, this.blackScreen.height);
-        this.black = new SimpleProcSprite(this.blackScreen);
-        
-        // registra os prites
-        this.registerState(0);
-        this.registerSprite(bg,0);
-        this.registerSprite(this.black,0);
-    }
-
+   
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS OVERRIDE
     //---------------------------------------------------------------------------------------------------------
@@ -61,13 +37,15 @@ class SplashScene extends SimpleScene{
     // MÉTODOS
     //---------------------------------------------------------------------------------------------------------
     
+    registerSplash(splash,durationTime){ // private
+        this.registerSprite(splash,0); // os splash são adicionados na camada 0
+        this.splashImgCount++; // incrementa o contador de splashes
+        this.splashImgTimeList.push(durationTime); // cada i-ésimo tempo fica associado a cada i-ésimo sprite 
+    }
+
     addSplash(fileSource,durationTime){
-        // cria um novo sprite com a imagem recebida
-        let sprite = new SimpleSprite(fileSource);
-        // cria um novo splashpiece com o sprite e o seu tempo associado
-        let splashPiece = new SplashPiece(sprite,durationTime);
-        // adiciona o novo splashpiece na lista
-        this.splashPieceList.push(splashPiece);
+        let splash = new SimpleSprite(fileSource); // cria um novo sprite com a imagem recebida
+        this.registerSplash(splash,durationTime);
     }
 
     addPostScene(postScene){
@@ -94,12 +72,21 @@ class SplashScene extends SimpleScene{
             let alphaValue = 1.0 - diffEndTime/this.transitionDurationTime;
             this.black.setAlpha(alphaValue);
         }
-
+        //console.log(this.elapsedTime);
     }
 
     render() {
-        super.render();
+        // limpa a tela da renderização do quadro anterior
+        this.res.clearScreen();
 
+        // renderiza o splashscene atual
+        this.sceneLayersList[0].getSprite(this.splashImgIndex).render(this.res.offCtx);
+        
+        // renderiza o fundo preto da transição
+        this.black.render(this.res.offCtx);
+
+        // renderiza o imageBuffer na tela do jogo
+        this.res.ctx.drawImage(this.res.offscreen,0,0);
     }
 }
 export default SplashScene;

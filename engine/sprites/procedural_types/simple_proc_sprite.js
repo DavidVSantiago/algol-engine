@@ -12,6 +12,7 @@ class SimpleProcSprite extends Sprite {
         super();
         this.offCanvas = offCanvas;
         this.ctx=this.offCanvas.getContext('2d');
+        this.init();
     }
 
     //---------------------------------------------------------------------------------------------------------

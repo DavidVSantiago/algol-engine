@@ -1,3 +1,5 @@
+"use strict";
+
 import { SimpleScene, SimpleSprite } from "../engine/engine.js";
 
 class GamePlay extends SimpleScene{
