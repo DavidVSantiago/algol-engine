@@ -21,8 +21,12 @@ class GamePlay extends SimpleScene{
     // MÉTODOS 
     //---------------------------------------------------------------------------------------------------------
 
+     /** Invocado quando os recursos da cena começam a ser carregados */
+    onStartLoad() { // overriding
+        console.log("GAME onStartLoad()");
+    }
     /** Invocado após todos os recursos serem totalmente carregados */
-    onFinishLoad() { // overriding
+    onFinishLoad() { 
         this.b2.posX=150;
         this.b2.posY=200;
         console.log("GAME onFinishLoad()");

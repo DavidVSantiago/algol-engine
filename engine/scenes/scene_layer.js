@@ -21,12 +21,10 @@ class SceneLayer{
     //---------------------------------------------------------------------------------------------------------
 
     render(ctx){
-        // renderiza todos os sprites no imageBuffer externo
+        // renderiza todos os sprites desse layer
         for(let i=0;i<this.spritesList.length;i++){
             this.spritesList[i].render(ctx);
         }
-        
     }
-    
 }
 export default SceneLayer;

@@ -102,7 +102,6 @@ class SceneManager {
     }
 
     update() {
-
         // mecanismo de temporização para mudar os splashes
         // isso vai sair daqui. vai para dentro do update do splashscene
         if(this.splashList!=null){
