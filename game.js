@@ -14,16 +14,15 @@ class Game extends Engine{
 
         // cria e configura a cena de splash
         let sp1 = new SplashScene('Splash');
-        sp1.addSplash('assets/imgs/splash.png',3000); // adiciona uma imagem dentro array junto com oseu respectivo tempo de transição
-        sp1.addSplash('assets/imgs/splash2.png',3000); // adiciona uma imagem dentro array junto com oseu respectivo tempo de transição
-        sp1.addSplash('assets/imgs/splash3.png',3000); // adiciona uma imagem dentro array junto com oseu respectivo tempo de transição
-        sp1.addSplash('assets/imgs/splash4.png',3000); // adiciona uma imagem dentro array junto com oseu respectivo tempo de transição
+        sp1.addSplash('assets/imgs/splash.png',2000); // adiciona uma imagem dentro array junto com oseu respectivo tempo de transição
+        sp1.addSplash('assets/imgs/splash2.png',2000); // adiciona uma imagem dentro array junto com oseu respectivo tempo de transição
+        sp1.addSplash('assets/imgs/splash3.png',2000); // adiciona uma imagem dentro array junto com oseu respectivo tempo de transição
+        sp1.addSplash('assets/imgs/splash4.png',2000); // adiciona uma imagem dentro array junto com oseu respectivo tempo de transição
         let gamePlay = new GamePlay();
         sp1.addPostScene(gamePlay); // adiciona a cena a ser carregada após o splash
        
         // inicializa os splashes
         this.sceneManager.startScene(sp1);
-
     }
 
     handleEvents(){

@@ -7,10 +7,6 @@ import LoadingScene from "./types/loading_scene.js";
  * Classe usada pela maioria das outras classes da engine */
 class SceneManager {
     
-    static TYPE_SPLASH=0;
-    static TYPE_SCENE=1;
-    
-
     static singleton;
     constructor() {
         this.loadingScene=null;
@@ -52,45 +48,25 @@ class SceneManager {
         this.loadingScene = new LoadingScene('LOADING'); // cena usada entre os carregamentos das cenas
         this.loadingScene.startLoadResources(
             (scene)=>{ // callback para o pós carregamento dos recursos da cena de loading
-                this.actualScene = this.loadingScene;
+                this.changeScene(this.loadingScene);
                 requestAnimationFrame(gameLoopCallBack); // pode iniciar o gameloop
             }
         );
     }
 
+    changeScene(scene){
+        this.actualScene=scene;
+    }
+
     /** Dá início ao processo de inicialização da cena
     * @param {Scene} scene cena ser definida como atual */
     startScene = (scene) => {
+        this.changeScene(this.loadingScene);
         scene.startLoadResources(
             (scene) => { // callback para o pós carregamento dos recursos da cena
-                this.actualScene = scene;
+                this.changeScene(scene);
             }
         );
-    }
-
-    startSplashesList = (splashList,postSplashScene) => { // recebe uma lista de cenas a serem carregadas
-        splashList;
-        this.postSplashScene=postSplashScene;
-        this.actualScene = this.loadingScene;
-        const promises = splashList.map( // processa a lista de cena
-            (scene)=>{ // para cada cena
-                return scene.startLoadResources( // retorna uma promise
-                    (scene) => { // cada promise será resolvida quando este callback for invocado
-                        console.log("cena "+scene.name+" carregada");
-                    }
-                );
-            }
-        )
-        Promise.all(promises).then(()=>{
-            // quando todas os splashs forem carregadas
-            this.postSplashScene.startLoadResources( // carrega os recursos da cena pós splash 
-                (scene) => { // após carregados os recursos da cena pós splash
-                    console.log("todas as cenas carregadas");
-                    this.splashList=splashList;
-                    this.actualScene = this.splashList[0];
-                }
-            );
-        });
     }
 
     /*****************************************************************************/

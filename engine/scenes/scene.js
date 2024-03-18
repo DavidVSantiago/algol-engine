@@ -13,12 +13,13 @@ class Scene {
         this.res = Resources.getInstance(); // ref. para o singleton de recursos
 
         this.promisesList = []; // lista de todas as promisse de recursos da cena
+        this.urlList = []; // lista dos caminhos todas as as imagens da cena
         
         // cria um sprite procedural para representar um fundo preto (comum a várias cenas)
         this.blackScreen = new OffscreenCanvas(this.res.canvas.width, this.res.canvas.height);
         this.blackScreenCtx = this.blackScreen.getContext('2d');
         this.blackScreenCtx.fillStyle = "black";
-        this.blackScreenCtx.globalAlpha = 1; // a princípio transparente
+        this.blackScreenCtx.globalAlpha = 1; // tela preta da transição opaca
         this.blackScreenCtx.fillRect(0, 0, this.blackScreen.width, this.blackScreen.height);
         this.black = new SimpleProcSprite(this.blackScreen);  
     }

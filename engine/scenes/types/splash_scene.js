@@ -1,20 +1,20 @@
 "use strict";
 
-import {SceneManager, SimpleScene,SimpleSprite} from '../../engine.js';
+import { SceneManager, SimpleScene, SimpleSprite } from '../../engine.js';
 
 /** Abstract */
-class SplashScene extends SimpleScene{
-    constructor(name){
+class SplashScene extends SimpleScene {
+    constructor(name) {
         super(name);
-        this.splashImgCount=0; // quantidade de imagens de splash
-        this.splashImgIndex=0; // quantidade de imagens de splash
-        this.splashImgTimeList=[]; // array de tempos de cada iésimo splashImage
-        this.postScene=null; // cena a ser exibida ao final da exibição das imagens de splash
+        this.splashImgCount = 0; // quantidade de imagens de splash
+        this.splashImgIndex = 0; // quantidade de imagens de splash
+        this.splashImgTimeList = []; // array de tempos de cada iésimo splashImage
+        this.postScene = null; // cena a ser exibida ao final da exibição das imagens de splash
 
         // registra o sprite do fundo preto para as transições
-        this.registerSprite(this.black,9); // o layer 9 é obrigatório, para ficar na frente de todos
+        this.registerSprite(this.black, 9); // o layer 9 é obrigatório, para ficar na frente de todos
     }
-   
+
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS OVERRIDE
     //---------------------------------------------------------------------------------------------------------
@@ -23,45 +23,64 @@ class SplashScene extends SimpleScene{
     onStartLoad() { // overriding
         console.log("SPLASH onStartLoad()");
     }
-    
+
     /** Invocado após a cena aparecer na tela */
-    onFinishLoad(){ // overriding
+    onFinishLoad() { // overriding
         console.log("SPLASH onFinishLoad()");
     }
 
-    onShow(){
+    onShow() {
         console.log("SPLASH onShow()");
     }
 
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS
     //---------------------------------------------------------------------------------------------------------
-    
-    registerSplash(splash,durationTime){ // private
-        this.registerSprite(splash,0); // os splash são adicionados na camada 0
+
+    registerSplash(splash, durationTime) { // private
+        this.registerSprite(splash, 0); // os splash são adicionados na camada 0
         this.splashImgCount++; // incrementa o contador de splashes
         this.splashImgTimeList.push(durationTime); // cada i-ésimo tempo fica associado a cada i-ésimo sprite 
     }
 
-    addSplash(fileSource,durationTime){
+    addSplash(fileSource, durationTime) {
         let splash = new SimpleSprite(fileSource); // cria um novo sprite com a imagem recebida
-        this.registerSplash(splash,durationTime);
+        this.registerSplash(splash, durationTime);
     }
 
-    addPostScene(postScene){
+    addPostScene(postScene) {
         this.postScene = postScene;
+    }
+
+    /** Adiciona as promises de carregamento das imagens desta cena */
+    addPromiseList() {
+        // adiciona as promises de carregamentos das imagens dos splashes
+        super.addPromiseList();
+        // adiciona as promises de carregamentos das imagens do postScene
+        this.postScene.addPromiseList();
+        // junta as promisses das imagens dos splashes e as da postScene
+        this.promisesList = this.promisesList.concat(this.postScene.promisesList);
+    }
+
+    postResolveAllPromises() {
+        // realiza as operações pós carregamento das imagens dos splashes
+        super.postResolveAllPromises();
+        // realiza as operações pós carregamento das imagens dos postScene
+        this.postScene.postResolveAllPromises();
     }
 
     /** Inicializa todos os recursos assíncronos da cena, principalmente as imagens
     * @param {callback} onFinishLoadCallBack função a ser invocada para iniciar esta cena, após os recursos serem carregados */
     startLoadResources(onFinishLoadCallBack) {
-
-        super.startLoadResources((scene)=>{ // invoca a versão pai para iniciar o carregamento das imagens dos splashes
-
-            this.postScene.startLoadResources((scene)=>{// inicia o carregamento do postScene
-                onFinishLoadCallBack(this); // apos carregar os splashes e o postscene, retorna o callback principal
-            })
-        });
+        this.onStartLoad(); // começou a carregar a cena
+        this.postScene.onStartLoad();
+        this.addPromiseList();
+        Promise.all(this.promisesList).then(()=>{
+            this.postResolveAllPromises();
+            this.onFinishLoad(); // terminou de carregar a cena
+            this.postScene.onFinishLoad();
+            onFinishLoadCallBack(this); // informa o termino do carregamento da cena
+        }).catch(error => { console.log(error); });
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -69,30 +88,30 @@ class SplashScene extends SimpleScene{
     //---------------------------------------------------------------------------------------------------------
 
     // Sobrescreve para especificar como as teclas serão tratadas nessa cena
-    handleEvents(){
-       
+    handleEvents() {
+
     }
 
     update() {
-        this.elapsedTime+=this.res.deltaTime;
+        this.elapsedTime += this.res.deltaTime;
         // atualiza os valores de transparencia da tela preta de trasição do splash
-        if(this.elapsedTime<=this.transitionDurationTime){ // inicio da transição
-            let alphaValue = 1.0 - this.elapsedTime/this.transitionDurationTime;
+        if (this.elapsedTime <= this.transitionDurationTime) { // inicio da transição
+            let alphaValue = 1.0 - this.elapsedTime / this.transitionDurationTime;
             this.black.setAlpha(alphaValue);
-        }else if(this.elapsedTime>=this.splashImgTimeList[this.splashImgIndex]-this.transitionDurationTime){ // final da transição
-            let diffEndTime = this.splashImgTimeList[this.splashImgIndex]-this.elapsedTime;
-            let alphaValue = 1.0 - diffEndTime/this.transitionDurationTime;
+        } else if (this.elapsedTime >= this.splashImgTimeList[this.splashImgIndex] - this.transitionDurationTime) { // final da transição
+            let diffEndTime = this.splashImgTimeList[this.splashImgIndex] - this.elapsedTime;
+            let alphaValue = 1.0 - diffEndTime / this.transitionDurationTime;
             this.black.setAlpha(alphaValue);
         }
 
         // checa se o tempo splash atual chegou ao fim
-        if(this.elapsedTime>=this.splashImgTimeList[this.splashImgIndex]){
+        if (this.elapsedTime >= this.splashImgTimeList[this.splashImgIndex]) {
             this.splashImgIndex++; // muda para o próximo splash
-            this.elapsedTime=0; // reinicia o contador de tempo da cena
-            
+            this.elapsedTime = 0; // reinicia o contador de tempo da cena
+
             // checa se já se passaram todos os splashs
-            if(this.splashImgIndex>=this.splashImgCount){
-                
+            if (this.splashImgIndex >= this.splashImgCount) {
+                SceneManager.getInstance().changeScene(this.postScene);
             }
         }
 
@@ -110,7 +129,7 @@ class SplashScene extends SimpleScene{
         this.black.render(this.res.offCtx);
 
         // renderiza o imageBuffer na tela do jogo
-        this.res.ctx.drawImage(this.res.offscreen,0,0);
+        this.res.ctx.drawImage(this.res.offscreen, 0, 0);
     }
 }
 export default SplashScene;

@@ -11,61 +11,69 @@ class SimpleScene extends Scene {
     * @param {String} name nome único da cena */
     constructor(name) {
         super(name);
-        
+
         // atributos da transição da tela
-        this.elapsedTime=0; // tempo decorrido da cena
-        this.transitionDurationTime=500;
-        this.minTransitionTime=1000; // tempo, em milissegundo, mínimo de duração da transição da cena
+        this.elapsedTime = 0; // tempo decorrido da cena
+        this.transitionDurationTime = 500;
+        this.minTransitionTime = 1000; // tempo, em milissegundo, mínimo de duração da transição da cena
 
         // array de layers da cena (max 10)
         this.sceneLayersList = [];
-        for(let i=0;i<10;i++){
+        for (let i = 0; i < 10; i++) {
             this.sceneLayersList.push(new SceneLayer());
         }
+
+        // tela preta da transição transparente
+        this.black.setAlpha(0);
     }
 
     //---------------------------------------------------------------------------------------------------------
     // MÉTODOS 
     //---------------------------------------------------------------------------------------------------------
 
-    /** Inicializa todos os recursos assíncronos da cena, principalmente as imagens
-    * @param {callback} onFinishLoadCallBack função a ser invocada para iniciar esta cena, após os recursos serem carregados */
-    startLoadResources(onFinishLoadCallBack) {
-
-        this.onStartLoad(); // começou a carregar a cena
-        
+    addPromiseList() {
         // Vincula o onload de todas as imagens à novas promisses
         for (let i = 0; i < this.sceneLayersList.length; i++) { // percorre todos os layers
             let spritesList = this.sceneLayersList[i].spritesList;
-            for (let j = 0; j < spritesList.length; j++) { // percorre todos os sprites de cada batch
+            for (let j = 0; j < spritesList.length; j++) { // percorre todos os sprites de cada layer
                 if (spritesList[j] instanceof SimpleSprite)
                     this.promisesList.push( // adiciona uma nova promisse na lista, cada uma associada a uma imagem
-                        new Promise((resolve) => {
-                            if (spritesList[j] instanceof SimpleSprite)
+                        new Promise((resolve, reject) => {
+                            if (spritesList[j] instanceof SimpleSprite) {
                                 spritesList[j].img.onload = () => resolve(); // quando o onload acontecer vai resolver a promisse
+                                spritesList[j].img.onerror = () => reject;
+                            }
                         })
                     );
             }
         }
-
-        // quando todas as promisses forem resolvidas...
-         Promise.all(this.promisesList).then(() => {
-            for (let i = 0; i < this.sceneLayersList.length; i++) { // percorre todos os batchs
-                let spritesList = this.sceneLayersList[i].spritesList;
-                for (let i = 0; i < spritesList.length; i++) { // percorre todos os sprites de cada batch
-                    spritesList[i].init(); // inicia cada uma das imagens
-                    spritesList[i].loaded = true;
-                }
-            }
-            this.onFinishLoad(); // terminou de carregar a cena
-            onFinishLoadCallBack(this); // informa o termino do carregamento da cena
-        }).catch(error => {
-            console.log(error); // rejectReason of any first rejected promise
-        });;
     }
 
-    registerSprite(sprite, layerIndex){
-        this.sceneLayersList[layerIndex].putSprite(sprite,layerIndex);
+    postResolveAllPromises() {
+        // quando todas as promisses forem resolvidas...
+        for (let i = 0; i < this.sceneLayersList.length; i++) { // percorre todos os layers
+            let spritesList = this.sceneLayersList[i].spritesList;
+            for (let i = 0; i < spritesList.length; i++) { // percorre todos os sprites de cada batch
+                spritesList[i].init(); // inicia cada uma das imagens
+                spritesList[i].loaded = true;
+            }
+        }
+    }
+
+    /** Inicializa todos os recursos assíncronos da cena, principalmente as imagens
+    * @param {callback} onFinishLoadCallBack função a ser invocada para iniciar esta cena, após os recursos serem carregados */
+    startLoadResources(onFinishLoadCallBack) {
+        this.onStartLoad(); // começou a carregar a cena
+        this.addPromiseList();
+        Promise.all(this.promisesList).then(()=>{
+            this.postResolveAllPromises();
+            this.onFinishLoad(); // terminou de carregar a cena
+            onFinishLoadCallBack(this); // informa o termino do carregamento da cena
+        }).catch(error => { console.log(error); });
+    }
+
+    registerSprite(sprite, layerIndex) {
+        this.sceneLayersList[layerIndex].putSprite(sprite, layerIndex);
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -77,14 +85,14 @@ class SimpleScene extends Scene {
         this.res.clearScreen();
 
         // renderiza todos os sprites da cena no buffer
-        for(let i=0;i<this.sceneLayersList.length;i++){
+        for (let i = 0; i < this.sceneLayersList.length; i++) {
             this.sceneLayersList[i].render(this.res.offCtx);
         }
         // renderiza o fundo preto da transição
         this.black.render(this.res.offCtx);
 
         // renderiza o imageBuffer na tela do jogo
-        this.res.ctx.drawImage(this.res.offscreen,0,0);
+        this.res.ctx.drawImage(this.res.offscreen, 0, 0);
     }
 }
 
